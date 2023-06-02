@@ -4,7 +4,7 @@ import { getTags } from "../service";
 import "./DrawTags.css";
 
 const DrawTags = props => {
-  const { handleSelectChange } = props;
+  const { handleSelectChange, texto, showEmptyOption } = props;
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
@@ -20,7 +20,13 @@ const DrawTags = props => {
     <>
       <div className="filters-tags">
         <select name="tags" multiple onChange={handleSelectChange}>
-          <option value={""}>todos los Tags</option>
+          {showEmptyOption ? (
+            <option disabled value="">
+              {texto}
+            </option>
+          ) : (
+            <option value="">{texto}</option>
+          )}
           {tags.map((tag, index) => (
             <option key={index} value={tag}>
               {tag}

@@ -14,9 +14,10 @@ const AdsPage = () => {
   const [ads, setAds] = useState([]);
   const [query, setQuery] = useState("");
   const [querySale, setQuerySale] = useState("");
-  const [queryPriceRange, setQueryPriceRange] = useState("");
   const [noResults, setNoResult] = useState(true);
   const [queryTags, setQueryTags] = useState([]);
+  const [queryMinPrice, setQueryMinPrice] = useState("");
+  const [queryMaxPrice, setQueryMaxPrice] = useState("");
   const [error, setError] = useState(null);
 
   const resetError = () => {
@@ -47,8 +48,13 @@ const AdsPage = () => {
     setNoResult(true);
   };
 
-  const handleChangePriceRange = event => {
-    setQueryPriceRange(event.target.value);
+  const handleChangeMinPrice = event => {
+    setQueryMinPrice(event.target.value);
+    setNoResult(true);
+  };
+
+  const handleChangeMaxPrice = event => {
+    setQueryMaxPrice(event.target.value);
     setNoResult(true);
   };
 
@@ -76,19 +82,12 @@ const AdsPage = () => {
     (ad.name ?? "").toUpperCase().startsWith(query.toUpperCase());
 
   const filterAdPrice = ad => {
-    if (!queryPriceRange) return true;
-    switch (queryPriceRange) {
-      case "opcion1":
-        return ad.price < 50;
-      case "opcion2":
-        return ad.price >= 50 && ad.price <= 100;
-      case "opcion3":
-        return ad.price >= 100 && ad.price <= 250;
-      case "opcion4":
-        return ad.price >= 250;
-      default:
-        return true;
-    }
+    if (!queryMinPrice && !queryMaxPrice) return true;
+
+    const minPrice = parseInt(queryMinPrice) || 0;
+    const maxPrice = parseInt(queryMaxPrice) || Infinity;
+
+    return ad.price >= minPrice && ad.price <= maxPrice;
   };
 
   const filterAdTags = ad => {
@@ -113,15 +112,13 @@ const AdsPage = () => {
           {!!ads.length ? (
             <>
               <section className="filters">
-                <label className="form-label">
-                  Search:
-                  <input
-                    type="text"
-                    style={{ borderWidth: 1 }}
-                    value={query}
-                    onChange={handleChange}
-                  />
-                </label>
+                <label className="form-label">Search:</label>
+                <input
+                  type="text"
+                  style={{ borderWidth: 1 }}
+                  value={query}
+                  onChange={handleChange}
+                />
                 <label className="form-label">Todos</label>
                 <input
                   className="form-input"
@@ -147,22 +144,30 @@ const AdsPage = () => {
                   value={false}
                   onClick={handleChangeSale}
                 />
-                <label className="form-label">Precio:</label>
-                <select
-                  type="switch"
-                  value={queryPriceRange}
-                  onChange={handleChangePriceRange}>
-                  <option value="" defaultChecked>
-                    Todos
-                  </option>
-                  <option value="opcion1">0 - 50 </option>
-                  <option value="opcion2">50 - 100 </option>
-                  <option value="opcion3">100 - 250 </option>
-                  <option value="opcion4"> &gt;250 </option>
-                </select>
+              </section>
+              <section className="filters">
+                <label className="form-label">Precio Mínimo:</label>
+                <input
+                  className="form-input"
+                  type="number"
+                  placeholder="Introduce un precio"
+                  value={queryMinPrice}
+                  onChange={handleChangeMinPrice}
+                />
+                <label className="form-label">Precio Máximo:</label>
+                <input
+                  className="form-input"
+                  type="number"
+                  placeholder="Introduce un precio"
+                  value={queryMaxPrice}
+                  onChange={handleChangeMaxPrice}
+                />
               </section>
 
-              <DrawTags handleSelectChange={handleSelectChange} />
+              <DrawTags
+                handleSelectChange={handleSelectChange}
+                texto="Borrar tags"
+              />
 
               <div className="ad-container ">
                 {filteredAds.length === 0 && noResults ? (

@@ -8,13 +8,12 @@ import Spinner from "../../shared/spinner/Spinner";
 import DrawTags from "../drawTags/DrawTags";
 import ErrorModal from "../../shared/modal/ErrorModal";
 
-let ad = {};
-
 const AdNew = () => {
   const navigate = useNavigate();
   const [isCreateAd, setIsCreateAd] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(null);
+  const [ad, setAd] = useState({});
 
   const resetError = () => {
     setError(null);
@@ -58,22 +57,23 @@ const AdNew = () => {
       setIsCreateAd(true);
 
       //NOTE  Object.keys() para obtener las claves de formData
-      const adNew = new FormData();
+      const adNew = {
+        name: formData.name,
+        sale: formData.sale,
+        price: formData.price,
+        tags: formData.tags,
+        photo: photo ? photo.photo : null,
+      };
 
-      Object.keys(formData).forEach(key => {
-        adNew.append(key, formData[key]);
-      });
-
-      if (photo !== null) {
-        adNew.append("photo", photo.photo);
-      }
-
-      ad = await getForm(adNew);
+      const createdAd = await getForm(adNew);
+      setAd(createdAd);
 
       setIsCreateAd(false);
       setShowModal(true);
     } catch (error) {
       setError(error);
+      //NOTE Restablecer el estado a false en caso de error
+      setIsCreateAd(false);
     }
   };
 
@@ -133,7 +133,11 @@ const AdNew = () => {
 
           <label className="form-label">Tag</label>
 
-          <DrawTags handleSelectChange={handleSelectChange} />
+          <DrawTags
+            handleSelectChange={handleSelectChange}
+            texto="Selecciona"
+            showEmptyOption={true}
+          />
 
           <label className="form-label-img">Img opcional</label>
           <input
