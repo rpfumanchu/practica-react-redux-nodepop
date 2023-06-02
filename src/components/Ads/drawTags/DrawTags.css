@@ -1,0 +1,14 @@
+.filters-tags {
+  /* width: 200px; */
+  display: flex;
+  /* flex-wrap: wrap; */
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px 0px 0px 0px;
+  margin-bottom: 10px;
+  background-color: whitesmoke;
+}
+
+.filters-tags .small {
+  padding: 20px 0px 0px 0px;
+}

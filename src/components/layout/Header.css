@@ -1,0 +1,80 @@
+.header-navbar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  position: fixed;
+  top: 0px;
+  background-color: gainsboro;
+  z-index: 9999;
+}
+
+.navbar-list-item > button {
+  padding: 2px 12px;
+  margin: 0 20px;
+}
+
+.navbar-list-item {
+  padding: 2px 5px;
+}
+
+/* .list-item > Button:hover {
+  background-color: #13c1ac;
+  color: white;
+} */
+
+ul.list {
+  list-style: none;
+  font-size: 15px;
+}
+
+.navbar-h4 {
+  font-size: 25px;
+}
+
+.title {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: var(--main-color);
+  color: black;
+  position: relative;
+  top: 60px;
+}
+
+.title-h1 {
+  font-size: 30px;
+  margin-top: 15px;
+  padding: 10px 0px 10px 0px;
+}
+
+.logo {
+  height: 50px;
+  width: 50px;
+  padding: 5px;
+  border-radius: 15px;
+}
+
+/* .greet-user {
+  display: flex;
+  position: absolute;
+  left: 300px;
+  font-size: 25px;
+} */
+
+/* .greet-user-p {
+  margin-left: 20px;
+  color: #13c1ac;
+} */
+
+/* .close-button {
+  border-radius: 8px;
+  background-color: red;
+  font-size: 20px;
+  color: white;
+} */

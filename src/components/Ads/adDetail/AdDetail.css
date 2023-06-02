@@ -1,0 +1,56 @@
+.ad-detail {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 90px;
+  margin-bottom: 10px;
+}
+
+.ad-detail .ad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px 40px 10px;
+  border: 2px solid var(--main-color);
+  background-color: white;
+}
+
+.ad-detail .ad .img {
+  display: flex;
+  justify-items: center;
+  height: 350px;
+  width: 500px;
+  margin-bottom: 10px;
+}
+
+.ad-detail .ad .span {
+  /* position: relative;
+  top: 8px; */
+  font-size: 25px;
+  background-color: #74e17fac;
+  border-radius: 6px;
+  /* padding: 1px 10px 1px 10px; */
+  margin-bottom: 10px;
+}
+
+.ad-detail .ad .span.tags {
+  height: 30px;
+  width: 100%;
+  margin-top: 8px;
+  line-height: 29px;
+}
+
+.text {
+  display: block;
+  font-size: 25px;
+  padding: 10px 0px 20px 0px;
+  margin-bottom: 10px;
+}
+
+.delete-button {
+  padding: 8px 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

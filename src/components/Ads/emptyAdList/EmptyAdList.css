@@ -1,0 +1,14 @@
+.empty-ad-list p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px;
+  gap: 30px;
+  text-align: center;
+  font-size: 25px;
+}
+
+.button-empty-ad-list {
+  width: 30%;
+  padding: 20px 0px;
+}

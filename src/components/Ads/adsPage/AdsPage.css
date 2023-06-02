@@ -1,0 +1,58 @@
+.ad-container {
+  width: 100%;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px 20px 10px;
+  border-radius: 10px;
+  text-align: center;
+  border: 2px solid var(--main-color);
+  background-color: whitesmoke;
+}
+
+.ad-container .ad-list {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  border-radius: 5px;
+  font-size: 21px;
+}
+
+.ad-name {
+  padding: 0 10px;
+}
+
+.ad-state {
+  padding: 0 10px;
+}
+
+.ad-price {
+  padding: 0 10px;
+}
+.ad-tags {
+  padding: 0 10px;
+}
+
+.filters {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 10px;
+  background-color: whitesmoke;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5px 0px;
+  gap: 5px;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
