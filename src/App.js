@@ -12,18 +12,18 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/api/v1/adverts/home" element={<HomePage />} />
+        <Route path="/adverts/home" element={<HomePage />} />
         <Route
-          path="/api/v1/adverts"
+          path="/adverts"
           element={
             <RequireAuth>
               <AdsPage />
             </RequireAuth>
           }
         />
-        <Route path="/api/auth/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route
-          path="/api/v1/adverts/new"
+          path="/adverts/new"
           element={
             <RequireAuth>
               <AdNew />
@@ -31,7 +31,7 @@ function App() {
           }
         />
         <Route
-          path="/api/v1/adverts/:id"
+          path="/adverts/:id"
           element={
             <RequireAuth>
               <AdDetail />
@@ -39,7 +39,7 @@ function App() {
           }
         />
 
-        <Route path="/" element={<Navigate to="/api/v1/adverts" />} />
+        <Route path="/" element={<Navigate to="/adverts" />} />
         <Route path="/404" element={<Page404 />} />
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>

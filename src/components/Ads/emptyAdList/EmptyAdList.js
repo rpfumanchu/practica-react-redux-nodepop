@@ -10,7 +10,7 @@ const EmptyAdList = () => {
         className="button-empty-ad-list"
         as={Link}
         variant="primary"
-        to="/api/v1/adverts/new">
+        to="/adverts/new">
         Crea un anuncio
       </Button>
     </div>

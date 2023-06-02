@@ -22,7 +22,7 @@ const AdNew = () => {
 
   const handleShowModal = () => {
     setShowModal(false);
-    navigate(`/api/v1/adverts/${ad.id}`);
+    navigate(`/adverts/${ad.id}`);
   };
 
   const [photo, setPhoto] = useState(null);

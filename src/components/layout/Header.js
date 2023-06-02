@@ -28,15 +28,15 @@ const Header = ({ className }) => {
   return (
     <header>
       <nav className={classNames("header-navbar", className)}>
-        <Link to="/api/v1/adverts/home">
+        <Link to="/adverts/home">
           <h4 className="navbar-h4">NodePop</h4>
         </Link>
         <ul className="navbar-list">
           <li className="navbar-list-item">
-            <NavLink className="navbar-list-item" to="/api/v1/adverts/new">
+            <NavLink className="navbar-list-item" to="/adverts/new">
               New
             </NavLink>
-            <NavLink className="navbar-list-item" to="/api/v1/adverts">
+            <NavLink className="navbar-list-item" to="/adverts">
               Latest Ad
             </NavLink>
             {isLogged ? (
@@ -44,7 +44,7 @@ const Header = ({ className }) => {
                 Logout
               </Button>
             ) : (
-              <Button as={Link} variant="primary" to="/api/auth/login">
+              <Button as={Link} variant="primary" to="/login">
                 Login
               </Button>
             )}

@@ -10,7 +10,7 @@ const RequireAuth = ({ children }) => {
   const location = useLocation();
 
   if (!isLogged) {
-    return <Navigate to="/api/auth/login" state={{ from: location }} />;
+    return <Navigate to="/login" state={{ from: location }} />;
   }
   return children;
 };

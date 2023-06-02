@@ -24,7 +24,7 @@ const AdDetail = () => {
 
   const handleDeleteMessage = () => {
     setShowDeleteMessage(false);
-    navigate("/api/v1/adverts");
+    navigate("/adverts");
   };
 
   const handleShowModalconfirm = async event => {
