@@ -19,7 +19,7 @@ export const getForm = form => {
     },
   };
 
-  return client.post(adsUrl, form, config);
+  return client.postForm(adsUrl, form, config);
 };
 
 export const getTags = () => {

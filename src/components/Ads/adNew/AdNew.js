@@ -56,7 +56,6 @@ const AdNew = () => {
     try {
       setIsCreateAd(true);
 
-      //NOTE  Object.keys() para obtener las claves de formData
       const adNew = {
         name: formData.name,
         sale: formData.sale,
