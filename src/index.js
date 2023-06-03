@@ -4,21 +4,26 @@ import "./index.css";
 import App from "./App";
 import storage from "./utils/storage";
 import { setAuthorizationHeader } from "./api/client";
-import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./components/auth/context";
+
+import configureStore from "./store";
+import Root from "./root";
 
 const accessToken = storage.get("auth");
 if (accessToken) {
   setAuthorizationHeader(accessToken);
 }
 
+const store = configureStore({ auth: !!accessToken });
+
+//NOTE pongo store lo más alto en mi app
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Root store={store}>
       <AuthContextProvider isInitiallyLogged={!!accessToken}>
         <App />
       </AuthContextProvider>
-    </BrowserRouter>
+    </Root>
   </React.StrictMode>,
 );
