@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAd, deleteAd } from "../service";
+import { deleteAd } from "../service";
 import Layout from "../../layout/Layout";
 import "../adsPage/AdsPage.css";
 import "./AdDetail.css";
@@ -8,15 +8,19 @@ import DefaultPhoto from "../../shared/defaultPhoto/DefaultPhoto";
 import Button from "../../shared/Button";
 import Modal from "../../shared/modal/Modal";
 import ErrorModal from "../../shared/modal/ErrorModal";
+import { useSelector } from "react-redux";
+import { getAdId } from "../../../store/selectors";
 
 const AdDetail = () => {
-  const params = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
-  const [ad, setAd] = useState(null);
+  //const [ad, setAd] = useState(null);
   const [deleteAdId, setDeleteAdId] = useState(null);
   const [showModal, setShowModal] = useState(true);
   const [showDeleteMessage, setShowDeleteMessage] = useState(false);
+  const ad = useSelector(getAdId(id));
+  console.log(ad);
 
   const resetError = () => {
     setError(null);
@@ -28,7 +32,7 @@ const AdDetail = () => {
   };
 
   const handleShowModalconfirm = async event => {
-    const removeAd = await deleteAd(params.id);
+    const removeAd = await deleteAd(id);
     setDeleteAdId(removeAd);
     setShowDeleteMessage(true);
     console.log(deleteAdId);
@@ -42,16 +46,16 @@ const AdDetail = () => {
     setShowModal(false);
   };
 
-  useEffect(() => {
-    getAd(params.id)
-      .then(ad => setAd(ad))
-      .catch(error => {
-        if (error.status === 404) {
-          return navigate("/404");
-        }
-        setError(error);
-      });
-  }, [params.id, navigate]);
+  // useEffect(() => {
+  //   getAd(params.id)
+  //     .then(ad => ad(ad))
+  //     .catch(error => {
+  //       if (error.status === 404) {
+  //         return navigate("/404");
+  //       }
+  //       setError(error);
+  //     });
+  // }, [params.id, navigate]);
 
   return (
     <Layout title="Detalle del anuncio">

@@ -187,7 +187,7 @@ const AdsPage = () => {
                   <ul>
                     {filteredAds.map(ad => (
                       <li key={ad.id}>
-                        <Link to={`/api/v1/adverts/${ad.id}`}>
+                        <Link to={`/adverts/${ad.id}`}>
                           <DrawAd {...ad} />
                         </Link>
                       </li>
