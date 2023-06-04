@@ -8,9 +8,10 @@ import { Link, NavLink } from "react-router-dom";
 import Modal from "../shared/modal/Modal";
 import { useState } from "react";
 import { authLogout } from "../../store/actions";
+import { getIsLogged } from "../../store/selectors";
 
 const Header = ({ className }) => {
-  const isLogged = useSelector(state => state.auth);
+  const isLogged = useSelector(getIsLogged);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
 
