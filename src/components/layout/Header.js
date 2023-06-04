@@ -1,17 +1,16 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import Button from "../shared/Button";
 import "./Header.css";
 import { ReactComponent as Icon } from "../../assets/nodepop.svg";
 import { logout } from "../auth/service";
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../auth/context";
 import Modal from "../shared/modal/Modal";
 import { useState } from "react";
 import { authLogout } from "../../store/actions";
 
 const Header = ({ className }) => {
-  const { isLogged } = useAuth();
+  const isLogged = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
 
