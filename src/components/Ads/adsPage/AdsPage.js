@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../layout/Layout";
 import { getAds } from "../service";
 import "./AdsPage.css";
@@ -8,10 +10,13 @@ import Spinner from "../../shared/spinner/Spinner";
 import EmptyAdList from "../emptyAdList/EmptyAdList";
 import ErrorModal from "../../shared/modal/ErrorModal";
 import DrawTags from "../drawTags/DrawTags";
+import { getAllAds } from "../../../store/selectors";
+import { adsLoaded } from "../../../store/actions";
 
 const AdsPage = () => {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-  const [ads, setAds] = useState([]);
+  const ads = useSelector(getAllAds);
   const [query, setQuery] = useState("");
   const [querySale, setQuerySale] = useState("");
   const [noResults, setNoResult] = useState(true);
@@ -58,6 +63,8 @@ const AdsPage = () => {
     setNoResult(true);
   };
 
+  const onAdsLoaded = ads => dispatch(adsLoaded(ads));
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -65,7 +72,7 @@ const AdsPage = () => {
 
         const ads = await getAds();
 
-        setAds(ads);
+        onAdsLoaded(ads);
       } catch (error) {
         setError(error);
       } finally {

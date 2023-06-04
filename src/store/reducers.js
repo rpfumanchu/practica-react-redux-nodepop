@@ -1,8 +1,8 @@
-import { AD_LOADED, AUTH_LOGIN, AUTH_LOGOUT } from "./types";
+import { ADS_LOADED, AUTH_LOGIN, AUTH_LOGOUT } from "./types";
 
 export const defaultState = {
   auth: false,
-  ad: [],
+  ads: [],
 };
 
 export function auth(state = defaultState.auth, action) {
@@ -17,8 +17,8 @@ export function auth(state = defaultState.auth, action) {
   }
 }
 
-export function ad(state = defaultState.ad, action) {
-  if (action.type === AD_LOADED) {
+export function ads(state = defaultState.ads, action) {
+  if (action.type === ADS_LOADED) {
     return action.payload;
   }
   return state;
