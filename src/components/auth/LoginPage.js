@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../shared/Button";
 import { login } from "./service";
 import "./LoginPage.css";
@@ -7,7 +7,13 @@ import Layout from "../layout/Layout";
 import { useLocation, useNavigate } from "react-router-dom";
 import ErrorModal from "../shared/modal/ErrorModal";
 import Spinner from "../shared/spinner/Spinner";
-import { authLogin } from "../../store/actions";
+import {
+  authLoginFailure,
+  authLoginRequest,
+  authLoginSuccess,
+  userInterfaceResetError,
+} from "../../store/actions";
+import { getUserInterface } from "../../store/selectors";
 
 //DONE Loguear con email y password y un checkbox para dar la opción de persistir el token, además manejar errores y feedback al usuario. Al hacer Login quiero enviar al usuario a la página a la que queria ir.
 
@@ -15,9 +21,8 @@ function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const { isLoading, error } = useSelector(getUserInterface);
 
   const [credentials, setCredentials] = useState({
     email: "",
@@ -26,10 +31,10 @@ function LoginPage() {
   });
 
   const resetError = () => {
-    setError(null);
+    dispatch(userInterfaceResetError());
   };
 
-  const onLogin = () => dispatch(authLogin());
+  const onLogin = () => dispatch(authLoginSuccess());
 
   const handleChange = event => {
     const { name, value, type, checked } = event.target;
@@ -59,19 +64,16 @@ function LoginPage() {
   const handleSubmit = async event => {
     event.preventDefault();
 
-    resetError();
-    setIsLoading(true);
+    dispatch(authLoginRequest());
     try {
       await login(credentials);
-      setIsLoading(false);
 
       setShowModal(true);
 
       //NOTE ahora estoy logueado
       onLogin();
     } catch (error) {
-      setError(error);
-      setIsLoading(false);
+      dispatch(authLoginFailure(error));
     }
   };
 

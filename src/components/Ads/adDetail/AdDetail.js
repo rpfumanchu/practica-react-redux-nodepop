@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteAd } from "../service";
 import Layout from "../../layout/Layout";
@@ -20,7 +20,6 @@ const AdDetail = () => {
   const [showModal, setShowModal] = useState(true);
   const [showDeleteMessage, setShowDeleteMessage] = useState(false);
   const ad = useSelector(getAdId(id));
-  console.log(ad);
 
   const resetError = () => {
     setError(null);
@@ -45,6 +44,13 @@ const AdDetail = () => {
   const handleButton = () => {
     setShowModal(false);
   };
+
+  useEffect(() => {
+    if (!ad) {
+      return navigate("/404");
+    }
+    setError(error);
+  }, [ad, error, navigate]);
 
   // useEffect(() => {
   //   getAd(params.id)
