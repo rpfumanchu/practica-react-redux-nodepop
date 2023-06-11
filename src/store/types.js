@@ -8,3 +8,5 @@ export const ADS_LOADED = "ADS_LOADER";
 export const AD_CREATED = "AD_CREATED";
 
 export const USERINTERFACE_RESET_ERROR = "USERINTERFACE_RESET_ERROR";
+
+export const TOGGLE_MODAL = "TOGGLE_MODAL";

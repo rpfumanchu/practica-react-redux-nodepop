@@ -6,28 +6,28 @@ import { ReactComponent as Icon } from "../../assets/nodepop.svg";
 import { logout } from "../auth/service";
 import { Link, NavLink } from "react-router-dom";
 import Modal from "../shared/modal/Modal";
-import { useState } from "react";
-import { authLogout } from "../../store/actions";
-import { getIsLogged } from "../../store/selectors";
+import { authLogout, toggleModal } from "../../store/actions";
+import { getIsLogged, getUserInterface } from "../../store/selectors";
 
 const Header = ({ className }) => {
   const isLogged = useSelector(getIsLogged);
   const dispatch = useDispatch();
-  const [showModal, setShowModal] = useState(false);
+  const { showModal } = useSelector(getUserInterface);
 
   const onLogout = () => dispatch(authLogout());
 
   const handleLogoutClick = () => {
-    setShowModal(true);
+    dispatch(toggleModal());
   };
 
   const handleShowModalconfirm = async event => {
     await logout();
     onLogout();
+    dispatch(toggleModal());
   };
 
   const handleShowModalCancel = () => {
-    setShowModal(false);
+    dispatch(toggleModal());
   };
 
   return (

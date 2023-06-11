@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../shared/Button";
-import { login } from "./service";
+//import { login } from "./service";
 import "./LoginPage.css";
 import Layout from "../layout/Layout";
 import { useLocation, useNavigate } from "react-router-dom";
 import ErrorModal from "../shared/modal/ErrorModal";
 import Spinner from "../shared/spinner/Spinner";
 import {
-  authLoginFailure,
-  authLoginRequest,
-  authLoginSuccess,
+  authLogin,
+  toggleModal,
   userInterfaceResetError,
 } from "../../store/actions";
 import { getUserInterface } from "../../store/selectors";
@@ -21,8 +20,7 @@ function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [showModal, setShowModal] = useState(false);
-  const { isLoading, error } = useSelector(getUserInterface);
+  const { isLoading, showModal, error } = useSelector(getUserInterface);
 
   const [credentials, setCredentials] = useState({
     email: "",
@@ -34,7 +32,7 @@ function LoginPage() {
     dispatch(userInterfaceResetError());
   };
 
-  const onLogin = () => dispatch(authLoginSuccess());
+  //const onLogin = () => dispatch(authLoginSuccess());
 
   const handleChange = event => {
     const { name, value, type, checked } = event.target;
@@ -53,28 +51,22 @@ function LoginPage() {
   };
 
   const handleShowModal = () => {
-    setShowModal(false);
-
     //NOTE Redirigir al nombre de la ruta o a home
-    const to = location.state?.from?.pathname || "/";
 
+    dispatch(toggleModal());
+
+    const to = location.state?.from?.pathname || "/";
     navigate(to);
   };
 
   const handleSubmit = async event => {
     event.preventDefault();
 
-    dispatch(authLoginRequest());
-    try {
-      await login(credentials);
-
-      setShowModal(true);
-
-      //NOTE ahora estoy logueado
-      onLogin();
-    } catch (error) {
-      dispatch(authLoginFailure(error));
-    }
+    dispatch(authLogin(credentials))
+      .then(() => {
+        dispatch(toggleModal());
+      })
+      .catch(error => console.log(error));
   };
 
   const buttonDisabled =

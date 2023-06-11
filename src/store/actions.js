@@ -1,9 +1,11 @@
+import { login } from "../components/auth/service";
 import {
   ADS_LOADED,
   AUTH_LOGIN_FAILURE,
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
+  TOGGLE_MODAL,
   USERINTERFACE_RESET_ERROR,
 } from "./types";
 
@@ -21,6 +23,19 @@ export const authLoginFailure = error => ({
   payload: error,
 });
 
+export const authLogin = credentials => async dispatch => {
+  dispatch(authLoginRequest());
+  try {
+    await login(credentials);
+
+    //NOTE ahora estoy logueado
+    dispatch(authLoginSuccess());
+  } catch (error) {
+    dispatch(authLoginFailure(error));
+    throw error;
+  }
+};
+
 export const authLogout = () => ({
   type: AUTH_LOGOUT,
 });
@@ -32,4 +47,8 @@ export const adsLoaded = ads => ({
 
 export const userInterfaceResetError = () => ({
   type: USERINTERFACE_RESET_ERROR,
+});
+
+export const toggleModal = () => ({
+  type: TOGGLE_MODAL,
 });

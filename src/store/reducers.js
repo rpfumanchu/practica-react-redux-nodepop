@@ -1,9 +1,10 @@
 import {
   ADS_LOADED,
-  AUTH_LOGIN_FAILURE,
-  AUTH_LOGIN_REQUEST,
+  //AUTH_LOGIN_FAILURE,
+  //AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
+  TOGGLE_MODAL,
   USERINTERFACE_RESET_ERROR,
 } from "./types";
 
@@ -12,6 +13,7 @@ export const defaultState = {
   ads: [],
   userInterface: {
     isLoading: false,
+    showModal: false,
     error: null,
   },
 };
@@ -36,20 +38,27 @@ export function ads(state = defaultState.ads, action) {
 }
 
 export function userInterface(state = defaultState.userInterface, action) {
-  switch (action.type) {
-    case AUTH_LOGIN_REQUEST:
-      return { isLoading: true, error: null };
-
-    case AUTH_LOGIN_FAILURE:
-      return { isLoading: false, error: action.payload };
-
-    case AUTH_LOGIN_SUCCESS:
-      return { isLoading: false, error: null };
-
-    case USERINTERFACE_RESET_ERROR:
-      return { ...state, error: null };
-
-    default:
-      return state;
+  if (action.error) {
+    return { isLoading: false, error: action.payload };
   }
+
+  if (/_REQUEST$/.test(action.type)) {
+    return { ...state, isLoading: true, error: null };
+  }
+
+  if (/_SUCCESS$/.test(action.type)) {
+    return { ...state, isLoading: false, error: null };
+  }
+
+  if (action.type === USERINTERFACE_RESET_ERROR) {
+    return { ...state, error: null };
+  }
+  // if (action.type === AUTH_LOGOUT) {
+  //   return { ...state, showModal: false };
+  // }
+  if (action.type === TOGGLE_MODAL) {
+    return { ...state, showModal: !state.showModal };
+  }
+
+  return state;
 }
