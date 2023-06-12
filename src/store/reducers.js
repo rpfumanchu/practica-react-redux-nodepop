@@ -4,6 +4,7 @@ import {
   //AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
+  TAGS_LOADED_SUCCESS,
   TOGGLE_MODAL,
   USERINTERFACE_RESET_ERROR,
 } from "./types";
@@ -11,6 +12,10 @@ import {
 export const defaultState = {
   auth: false,
   ads: {
+    areLoaded: false,
+    data: [],
+  },
+  tags: {
     areLoaded: false,
     data: [],
   },
@@ -35,6 +40,13 @@ export function auth(state = defaultState.auth, action) {
 
 export function ads(state = defaultState.ads, action) {
   if (action.type === ADS_LOADED_SUCCESS) {
+    return { areLoaded: true, data: action.payload };
+  }
+  return state;
+}
+
+export function tags(state = defaultState.tags, action) {
+  if (action.type === TAGS_LOADED_SUCCESS) {
     return { areLoaded: true, data: action.payload };
   }
   return state;

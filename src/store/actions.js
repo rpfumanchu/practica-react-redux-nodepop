@@ -1,6 +1,6 @@
-import { getAds } from "../components/Ads/service";
+import { getAds, getTags } from "../components/Ads/service";
 import { login } from "../components/auth/service";
-import { areAdsLoaded } from "./selectors";
+import { areAdsLoaded, areTagsLoaded } from "./selectors";
 import {
   ADS_LOADED_FAILURE,
   ADS_LOADED_REQUEST,
@@ -9,6 +9,9 @@ import {
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
+  TAGS_LOADED_FAILURE,
+  TAGS_LOADED_REQUEST,
+  TAGS_LOADED_SUCCESS,
   TOGGLE_MODAL,
   USERINTERFACE_RESET_ERROR,
 } from "./types";
@@ -68,6 +71,36 @@ export const adsLoaded = () => async (dispatch, getState) => {
   try {
     const ads = await getAds();
     dispatch(adsLoadedSuccess(ads));
+  } catch (error) {
+    dispatch(adsLoadedFailure(error));
+    throw error;
+  }
+};
+
+export const tagsLoadedRequest = () => ({
+  type: TAGS_LOADED_REQUEST,
+});
+
+export const tagsLoadedSuccess = tags => ({
+  type: TAGS_LOADED_SUCCESS,
+  payload: tags,
+});
+
+export const tagsLoadedFailure = error => ({
+  type: TAGS_LOADED_FAILURE,
+  error: true,
+  payload: error,
+});
+
+export const tagsLoaded = () => async (dispatch, getState) => {
+  if (areTagsLoaded(getState())) {
+    return;
+  }
+
+  dispatch(tagsLoadedRequest());
+  try {
+    const tags = await getTags();
+    dispatch(tagsLoadedSuccess(tags));
   } catch (error) {
     dispatch(adsLoadedFailure(error));
     throw error;

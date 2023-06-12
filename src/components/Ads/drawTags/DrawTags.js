@@ -1,20 +1,17 @@
 import { useEffect } from "react";
-import { useState } from "react";
-import { getTags } from "../service";
 import "./DrawTags.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllTags } from "../../../store/selectors";
+import { tagsLoaded } from "../../../store/actions";
 
 const DrawTags = props => {
   const { handleSelectChange, texto, showEmptyOption } = props;
-  const [tags, setTags] = useState([]);
+  const tags = useSelector(getAllTags);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function fetchTags() {
-      const tags = await getTags();
-
-      setTags(tags);
-    }
-    fetchTags();
-  }, []);
+    dispatch(tagsLoaded([])).catch(error => console.log(error));
+  }, [dispatch]);
 
   return (
     <>
