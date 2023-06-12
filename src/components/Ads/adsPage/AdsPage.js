@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../layout/Layout";
-import { getAds } from "../service";
+//import { getAds } from "../service";
 import "./AdsPage.css";
 import { Link } from "react-router-dom";
 import DrawAd from "../DrawAd";
@@ -10,12 +10,13 @@ import Spinner from "../../shared/spinner/Spinner";
 import EmptyAdList from "../emptyAdList/EmptyAdList";
 import ErrorModal from "../../shared/modal/ErrorModal";
 import DrawTags from "../drawTags/DrawTags";
-import { getAllAds } from "../../../store/selectors";
-import { adsLoaded } from "../../../store/actions";
+import { getAllAds, getUserInterface } from "../../../store/selectors";
+import { adsLoaded, userInterfaceResetError } from "../../../store/actions";
 
 const AdsPage = () => {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading, error } = useSelector(getUserInterface);
+  //const [isLoading, setIsLoading] = useState(true);
   const ads = useSelector(getAllAds);
   const [query, setQuery] = useState("");
   const [querySale, setQuerySale] = useState("");
@@ -23,10 +24,10 @@ const AdsPage = () => {
   const [queryTags, setQueryTags] = useState([]);
   const [queryMinPrice, setQueryMinPrice] = useState("");
   const [queryMaxPrice, setQueryMaxPrice] = useState("");
-  const [error, setError] = useState(null);
+  //const [error, setError] = useState(null);
 
   const resetError = () => {
-    setError(null);
+    dispatch(userInterfaceResetError());
   };
 
   const handleSelectChange = event => {
@@ -63,23 +64,10 @@ const AdsPage = () => {
     setNoResult(true);
   };
 
-  const onAdsLoaded = ads => dispatch(adsLoaded(ads));
+  //const onAdsLoaded = () => dispatch(adsLoaded());
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        setIsLoading(true);
-
-        const ads = await getAds();
-
-        onAdsLoaded(ads);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchData();
+    dispatch(adsLoaded()).catch(error => console.log(error));
   }, []);
 
   const filterAdSaleValueOrDefault = ad =>

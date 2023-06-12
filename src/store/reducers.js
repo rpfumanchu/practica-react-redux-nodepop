@@ -1,5 +1,5 @@
 import {
-  ADS_LOADED,
+  ADS_LOADED_SUCCESS,
   //AUTH_LOGIN_FAILURE,
   //AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
@@ -10,7 +10,10 @@ import {
 
 export const defaultState = {
   auth: false,
-  ads: [],
+  ads: {
+    areLoaded: false,
+    data: [],
+  },
   userInterface: {
     isLoading: false,
     showModal: false,
@@ -31,8 +34,8 @@ export function auth(state = defaultState.auth, action) {
 }
 
 export function ads(state = defaultState.ads, action) {
-  if (action.type === ADS_LOADED) {
-    return action.payload;
+  if (action.type === ADS_LOADED_SUCCESS) {
+    return { areLoaded: true, data: action.payload };
   }
   return state;
 }
