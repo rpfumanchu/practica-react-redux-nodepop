@@ -5,26 +5,45 @@ import Layout from "../../layout/Layout";
 import "./AdsPage.css";
 import { Link } from "react-router-dom";
 import DrawAd from "../DrawAd";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Spinner from "../../shared/spinner/Spinner";
 import EmptyAdList from "../emptyAdList/EmptyAdList";
 import ErrorModal from "../../shared/modal/ErrorModal";
 import DrawTags from "../drawTags/DrawTags";
-import { getAllAds, getUserInterface } from "../../../store/selectors";
-import { adsLoaded, userInterfaceResetError } from "../../../store/actions";
+import {
+  getAdFilteringMaxPrice,
+  getAdFilteringMinPrice,
+  getAdFilteringName,
+  getAdFilteringSale,
+  getAdFilteringTags,
+  getAllAds,
+  getUserInterface,
+} from "../../../store/selectors";
+import {
+  adFilteringMaxPrice,
+  adFilteringMinPrice,
+  adFilteringName,
+  adFilteringSale,
+  adFilteringTags,
+  adsLoaded,
+  toggleResult,
+  userInterfaceResetError,
+} from "../../../store/actions";
 
 const AdsPage = () => {
   const dispatch = useDispatch();
-  const { isLoading, error } = useSelector(getUserInterface);
-  //const [isLoading, setIsLoading] = useState(true);
+  const { isLoading, searchResults, error } = useSelector(getUserInterface);
+  const query = useSelector(getAdFilteringName);
+  const querySale = useSelector(getAdFilteringSale);
+  const queryTags = useSelector(getAdFilteringTags);
+  const queryMinPrice = useSelector(getAdFilteringMinPrice);
+  const queryMaxPrice = useSelector(getAdFilteringMaxPrice);
   const ads = useSelector(getAllAds);
-  const [query, setQuery] = useState("");
-  const [querySale, setQuerySale] = useState("");
-  const [noResults, setNoResult] = useState(true);
-  const [queryTags, setQueryTags] = useState([]);
-  const [queryMinPrice, setQueryMinPrice] = useState("");
-  const [queryMaxPrice, setQueryMaxPrice] = useState("");
-  //const [error, setError] = useState(null);
+  // const [query, setQuery] = useState("");
+  // const [querySale, setQuerySale] = useState("");
+  // const [queryTags, setQueryTags] = useState([]);
+  // const [queryMinPrice, setQueryMinPrice] = useState("");
+  // const [queryMaxPrice, setQueryMaxPrice] = useState("");
 
   const resetError = () => {
     dispatch(userInterfaceResetError());
@@ -36,32 +55,32 @@ const AdsPage = () => {
       option => option.value,
     );
 
-    setQueryTags(selectedTags);
-    setNoResult(true);
+    dispatch(adFilteringTags(selectedTags));
+    dispatch(toggleResult(true));
   };
 
   const resetModal = () => {
-    setNoResult(false);
+    dispatch(toggleResult(false));
   };
 
   const handleChange = event => {
-    setQuery(event.target.value);
-    setNoResult(true);
+    dispatch(adFilteringName(event.target.value));
+    dispatch(toggleResult(true));
   };
 
   const handleChangeSale = event => {
-    setQuerySale(event.target.value);
-    setNoResult(true);
+    dispatch(adFilteringSale(event.target.value));
+    dispatch(toggleResult(true));
   };
 
   const handleChangeMinPrice = event => {
-    setQueryMinPrice(event.target.value);
-    setNoResult(true);
+    dispatch(adFilteringMinPrice(event.target.value));
+    dispatch(toggleResult(true));
   };
 
   const handleChangeMaxPrice = event => {
-    setQueryMaxPrice(event.target.value);
-    setNoResult(true);
+    dispatch(adFilteringMaxPrice(event.target.value));
+    dispatch(toggleResult(true));
   };
 
   //const onAdsLoaded = () => dispatch(adsLoaded());
@@ -75,6 +94,8 @@ const AdsPage = () => {
 
   const filterAdName = ad =>
     (ad.name ?? "").toUpperCase().startsWith(query.toUpperCase());
+  console.log("el Primero", query);
+  console.log("tipo", typeof query);
 
   const filterAdPrice = ad => {
     if (!queryMinPrice && !queryMaxPrice) return true;
@@ -97,6 +118,14 @@ const AdsPage = () => {
     .filter(filterAdName)
     .filter(filterAdPrice)
     .filter(filterAdTags);
+  console.log(
+    "todo2",
+    typeof query,
+    typeof querySale,
+    typeof queryTags,
+    typeof queryMinPrice,
+    typeof queryMaxPrice,
+  );
 
   return (
     <Layout title="Que quieres hacer...">
@@ -165,7 +194,7 @@ const AdsPage = () => {
               />
 
               <div className="ad-container ">
-                {filteredAds.length === 0 && noResults ? (
+                {filteredAds.length === 0 && searchResults ? (
                   <ErrorModal
                     title="Upsssss"
                     message={"No hay resultados"}
