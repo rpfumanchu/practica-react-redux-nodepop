@@ -1,6 +1,5 @@
 import { getAds, getTags } from "../components/Ads/service";
 import { login } from "../components/auth/service";
-//import { queryMaxPrice, queryMinPrice, querySale, queryTags } from "./reducers";
 import { areAdsLoaded, areTagsLoaded } from "./selectors";
 import {
   ADS_LOADED_FAILURE,
@@ -135,6 +134,7 @@ export const toggleResult = value => ({
 });
 
 //NOTE para filtrar por los distintos campos
+
 export const adFilteringName = value => ({
   type: AD_FILTERING_NAME,
   payload: value,

@@ -20,6 +20,8 @@ export const TOGGLE_MODAL = "TOGGLE_MODAL";
 
 export const TOGGLE_RESULT = "TOGGLE_RESULT";
 
+// export const AD_FILTERING = "AD_FILTERING";
+
 export const AD_FILTERING_NAME = "AD_FILTERING_NAME";
 export const AD_FILTERING_SALE = "AD_FILTERING_SALE";
 export const AD_FILTERING_TAGS = "AD_FILTERING_TAGS";

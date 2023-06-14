@@ -11,11 +11,12 @@ import EmptyAdList from "../emptyAdList/EmptyAdList";
 import ErrorModal from "../../shared/modal/ErrorModal";
 import DrawTags from "../drawTags/DrawTags";
 import {
-  getAdFilteringMaxPrice,
-  getAdFilteringMinPrice,
-  getAdFilteringName,
-  getAdFilteringSale,
-  getAdFilteringTags,
+  getAdFiltering,
+  // getAdFilteringMaxPrice,
+  // getAdFilteringMinPrice,
+  // getAdFilteringName,
+  // getAdFilteringSale,
+  // getAdFilteringTags,
   getAllAds,
   getUserInterface,
 } from "../../../store/selectors";
@@ -33,11 +34,13 @@ import {
 const AdsPage = () => {
   const dispatch = useDispatch();
   const { isLoading, searchResults, error } = useSelector(getUserInterface);
-  const query = useSelector(getAdFilteringName);
-  const querySale = useSelector(getAdFilteringSale);
-  const queryTags = useSelector(getAdFilteringTags);
-  const queryMinPrice = useSelector(getAdFilteringMinPrice);
-  const queryMaxPrice = useSelector(getAdFilteringMaxPrice);
+  const { query, querySale, queryTags, queryMinPrice, queryMaxPrice } =
+    useSelector(getAdFiltering);
+  // const query = useSelector(getAdFilteringName);
+  // const querySale = useSelector(getAdFilteringSale);
+  // const queryTags = useSelector(getAdFilteringTags);
+  // const queryMinPrice = useSelector(getAdFilteringMinPrice);
+  // const queryMaxPrice = useSelector(getAdFilteringMaxPrice);
   const ads = useSelector(getAllAds);
   // const [query, setQuery] = useState("");
   // const [querySale, setQuerySale] = useState("");
