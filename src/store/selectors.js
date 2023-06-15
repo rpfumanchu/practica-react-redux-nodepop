@@ -6,8 +6,10 @@ export const getAllTags = state => state.tags.data;
 
 export const getAdFiltering = state => state.filtered;
 
-export const getAdId = id => state =>
-  getAllAds(state).find(ads => ads.id === id);
+// export const getAdId = id => state =>
+//   getAllAds(state).find(ads => ads.id === id);
+
+export const getAdId = id => state => state.ads.data.find(ad => ad.id === id);
 
 export const getUserInterface = state => state.userInterface;
 

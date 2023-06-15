@@ -8,8 +8,9 @@ import DefaultPhoto from "../../shared/defaultPhoto/DefaultPhoto";
 import Button from "../../shared/Button";
 import Modal from "../../shared/modal/Modal";
 import ErrorModal from "../../shared/modal/ErrorModal";
-import { useSelector } from "react-redux";
-import { getAdId } from "../../../store/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { getAdId, getUserInterface } from "../../../store/selectors";
+import { adLoad, userInterfaceResetError } from "../../../store/actions";
 
 const AdDetail = () => {
   const { id } = useParams();
@@ -19,10 +20,13 @@ const AdDetail = () => {
   const [deleteAdId, setDeleteAdId] = useState(null);
   const [showModal, setShowModal] = useState(true);
   const [showDeleteMessage, setShowDeleteMessage] = useState(false);
+  const dispatch = useDispatch();
   const ad = useSelector(getAdId(id));
+  //const { error } = useSelector(getUserInterface);
 
   const resetError = () => {
     setError(null);
+    //dispatch(userInterfaceResetError());
   };
 
   const handleDeleteMessage = () => {
@@ -46,11 +50,15 @@ const AdDetail = () => {
   };
 
   useEffect(() => {
-    if (!ad) {
-      return navigate("/404");
-    }
-    setError(error);
-  }, [ad, error, navigate]);
+    dispatch(adLoad(id)).catch(error => {
+      if (error.status === 404) {
+        return navigate("/404");
+      }
+    });
+    // if (error.status === 404) {
+    //   return navigate("/404");
+    // }
+  }, [dispatch, id, navigate]);
 
   // useEffect(() => {
   //   getAd(params.id)

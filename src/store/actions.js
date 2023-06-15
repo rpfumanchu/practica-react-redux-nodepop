@@ -1,6 +1,6 @@
-import { getAds, getTags } from "../components/Ads/service";
+import { getAd, getAds, getTags } from "../components/Ads/service";
 import { login } from "../components/auth/service";
-import { areAdsLoaded, areTagsLoaded } from "./selectors";
+import { areAdsLoaded, areTagsLoaded, getAdId } from "./selectors";
 import {
   ADS_LOADED_FAILURE,
   ADS_LOADED_REQUEST,
@@ -10,6 +10,9 @@ import {
   AD_FILTERING_NAME,
   AD_FILTERING_SALE,
   AD_FILTERING_TAGS,
+  AD_LOADED_FAILURE,
+  AD_LOADED_REQUEST,
+  AD_LOADED_SUCCESS,
   AUTH_LOGIN_FAILURE,
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
@@ -120,7 +123,39 @@ export const tagsLoaded = () => async (dispatch, getState) => {
   }
 };
 
-export const userInterfaceResetError = () => ({
+//NOTE manejo de un anuncio
+export const adLoadedRequest = () => ({
+  type: AD_LOADED_REQUEST,
+});
+
+export const adLoadedSuccess = ad => ({
+  type: AD_LOADED_SUCCESS,
+  payload: ad,
+});
+
+export const adLoadedFailure = error => ({
+  type: AD_LOADED_FAILURE,
+  error: true,
+  payload: error,
+});
+
+//DONE anuncio por su id
+export const adLoad = id => async (dispatch, getState) => {
+  const isLoaded = getAdId(id)(getState());
+  if (isLoaded) {
+    return;
+  }
+  dispatch(adLoadedRequest());
+  try {
+    const ad = await getAd(id);
+    dispatch(adLoadedSuccess(ad));
+  } catch (error) {
+    dispatch(adLoadedFailure(error));
+    throw error;
+  }
+};
+
+export const userInterfaceResetError = value => ({
   type: USERINTERFACE_RESET_ERROR,
 });
 

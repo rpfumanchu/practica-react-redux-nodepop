@@ -5,6 +5,7 @@ import {
   AD_FILTERING_NAME,
   AD_FILTERING_SALE,
   AD_FILTERING_TAGS,
+  AD_LOADED_SUCCESS,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
   TAGS_LOADED_SUCCESS,
@@ -53,6 +54,9 @@ export function auth(state = defaultState.auth, action) {
 export function ads(state = defaultState.ads, action) {
   if (action.type === ADS_LOADED_SUCCESS) {
     return { areLoaded: true, data: action.payload };
+  }
+  if (action.type === AD_LOADED_SUCCESS) {
+    return { ...state, data: [action.payload] };
   }
   return state;
 }

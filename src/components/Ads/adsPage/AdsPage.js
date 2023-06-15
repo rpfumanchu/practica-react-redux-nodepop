@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../layout/Layout";
-//import { getAds } from "../service";
 import "./AdsPage.css";
 import { Link } from "react-router-dom";
 import DrawAd from "../DrawAd";
@@ -12,11 +11,6 @@ import ErrorModal from "../../shared/modal/ErrorModal";
 import DrawTags from "../drawTags/DrawTags";
 import {
   getAdFiltering,
-  // getAdFilteringMaxPrice,
-  // getAdFilteringMinPrice,
-  // getAdFilteringName,
-  // getAdFilteringSale,
-  // getAdFilteringTags,
   getAllAds,
   getUserInterface,
 } from "../../../store/selectors";
@@ -36,17 +30,7 @@ const AdsPage = () => {
   const { isLoading, searchResults, error } = useSelector(getUserInterface);
   const { query, querySale, queryTags, queryMinPrice, queryMaxPrice } =
     useSelector(getAdFiltering);
-  // const query = useSelector(getAdFilteringName);
-  // const querySale = useSelector(getAdFilteringSale);
-  // const queryTags = useSelector(getAdFilteringTags);
-  // const queryMinPrice = useSelector(getAdFilteringMinPrice);
-  // const queryMaxPrice = useSelector(getAdFilteringMaxPrice);
   const ads = useSelector(getAllAds);
-  // const [query, setQuery] = useState("");
-  // const [querySale, setQuerySale] = useState("");
-  // const [queryTags, setQueryTags] = useState([]);
-  // const [queryMinPrice, setQueryMinPrice] = useState("");
-  // const [queryMaxPrice, setQueryMaxPrice] = useState("");
 
   const resetError = () => {
     dispatch(userInterfaceResetError());
@@ -86,8 +70,6 @@ const AdsPage = () => {
     dispatch(toggleResult(true));
   };
 
-  //const onAdsLoaded = () => dispatch(adsLoaded());
-
   useEffect(() => {
     dispatch(adsLoaded()).catch(error => console.log(error));
   }, []);
@@ -97,8 +79,6 @@ const AdsPage = () => {
 
   const filterAdName = ad =>
     (ad.name ?? "").toUpperCase().startsWith(query.toUpperCase());
-  console.log("el Primero", query);
-  console.log("tipo", typeof query);
 
   const filterAdPrice = ad => {
     if (!queryMinPrice && !queryMaxPrice) return true;
@@ -121,14 +101,6 @@ const AdsPage = () => {
     .filter(filterAdName)
     .filter(filterAdPrice)
     .filter(filterAdTags);
-  console.log(
-    "todo2",
-    typeof query,
-    typeof querySale,
-    typeof queryTags,
-    typeof queryMinPrice,
-    typeof queryMaxPrice,
-  );
 
   return (
     <Layout title="Que quieres hacer...">

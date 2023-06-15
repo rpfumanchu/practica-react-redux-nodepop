@@ -79,5 +79,8 @@
     "USERINTERFACE",
     "usuario",
     "Venta"
+  ],
+  "cSpell.ignoreWords": [
+    "tipo"
   ]
 }
