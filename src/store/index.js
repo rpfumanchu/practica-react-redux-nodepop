@@ -18,7 +18,7 @@ const composeEnhancers = composeWithDevTools({
 //NOTE uso preloadedState para tener un estado precargado
 export default function configureStore(preloadedState, { router }) {
   const middleware = [
-    thunk.withExtraArgument({ sercice: { auth, ads }, router }),
+    thunk.withExtraArgument({ service: { auth, ads }, router }),
   ];
   const store = createStore(
     reducer,

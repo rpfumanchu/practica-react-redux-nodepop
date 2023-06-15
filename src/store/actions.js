@@ -55,6 +55,7 @@ export const authLogin =
 
       //NOTE ahora estoy logueado
       dispatch(authLoginSuccess());
+      //NOTE Redirigir al nombre de la ruta o a home
       const to = router.state?.from?.pathname || "/";
       router.navigate(to);
     } catch (error) {
@@ -71,8 +72,8 @@ export const authLogoutSuccess = () => ({
 //DONE desloguearse
 export const authLogout =
   () =>
-  async (dispatch, _getState, { auth }) => {
-    await auth.logout();
+  async (dispatch, _getState, { service }) => {
+    await service.auth.logout();
     dispatch(authLogoutSuccess());
   };
 
@@ -95,14 +96,14 @@ export const adsLoadedFailure = error => ({
 //DONE Carga de anuncios
 export const adsLoaded =
   () =>
-  async (dispatch, getState, { ads: adsService }) => {
+  async (dispatch, getState, { service }) => {
     if (areAdsLoaded(getState())) {
       return;
     }
 
     dispatch(adsLoadedRequest());
     try {
-      const ads = await adsService.getAds();
+      const ads = await service.ads.getAds();
       dispatch(adsLoadedSuccess(ads));
     } catch (error) {
       dispatch(adsLoadedFailure(error));
@@ -129,14 +130,14 @@ export const tagsLoadedFailure = error => ({
 //DONE accedo a los distintos tags
 export const tagsLoaded =
   () =>
-  async (dispatch, getState, { ads: adsService }) => {
+  async (dispatch, getState, { service }) => {
     if (areTagsLoaded(getState())) {
       return;
     }
 
     dispatch(tagsLoadedRequest());
     try {
-      const tags = await adsService.getTags();
+      const tags = await service.ads.getTags();
       dispatch(tagsLoadedSuccess(tags));
     } catch (error) {
       dispatch(tagsLoadedFailure(error));
@@ -163,18 +164,21 @@ export const adLoadedFailure = error => ({
 //DONE anuncio por su id
 export const adLoad =
   id =>
-  async (dispatch, getState, { ads: adsService }) => {
+  async (dispatch, getState, { service, router }) => {
     const isLoaded = getAdId(id)(getState());
     if (isLoaded) {
       return;
     }
     dispatch(adLoadedRequest());
     try {
-      const ad = await adsService.getAd(id);
+      const ad = await service.ads.getAd(id);
       dispatch(adLoadedSuccess(ad));
     } catch (error) {
       dispatch(adLoadedFailure(error));
-      throw error;
+      if (error.status === 404) {
+        return router.navigate("/404");
+      }
+      //throw error;
     }
   };
 
@@ -197,15 +201,19 @@ export const adCreatedFailure = error => ({
 //DONE Crear anuncio
 export const adCreate =
   ad =>
-  async (dispatch, _getState, { ads: adsService }) => {
+  async (dispatch, _getState, { service, router }) => {
     dispatch(adCreatedRequest());
     try {
-      const { id } = await adsService.getForm(ad);
-      const createdAds = await adsService.getAd(id);
+      const { id } = await service.ads.getForm(ad);
+      const createdAds = await service.ads.getAd(id);
       dispatch(adCreatedSuccess(createdAds));
+      router.navigate(`/adverts/${id}`);
       return createdAds;
     } catch (error) {
       dispatch(adCreatedFailure(error));
+      if (error.status === 401) {
+        router.navigate("/login");
+      }
       throw error;
     }
   };
@@ -228,16 +236,17 @@ export const adDeleteFailure = error => ({
 //DONE borrado de anuncio por su id
 export const adDelete =
   id =>
-  async (dispatch, getState, { ads: adsService }) => {
+  async (dispatch, getState, { service, router }) => {
     // const isLoaded = getAdId(ad)(getState());
     // if (isLoaded) {
     //   return;
     // }
     dispatch(adDeleteRequest());
     try {
-      await adsService.deleteAd(id);
+      await service.ads.deleteAd(id);
       //const deletedAd = await getAd(id);
       dispatch(adDeleteSuccess(id));
+      router.navigate("/adverts");
       //return deletedAd;
     } catch (error) {
       dispatch(adDeleteFailure(error));

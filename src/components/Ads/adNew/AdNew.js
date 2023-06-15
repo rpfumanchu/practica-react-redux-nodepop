@@ -3,7 +3,7 @@ import "./AdNew.css";
 import Button from "../../shared/Button";
 import { useState } from "react";
 //import { getForm } from "../service";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import Spinner from "../../shared/spinner/Spinner";
 import DrawTags from "../drawTags/DrawTags";
 import ErrorModal from "../../shared/modal/ErrorModal";
@@ -14,7 +14,7 @@ import { adCreate, userInterfaceResetError } from "../../../store/actions";
 const AdNew = () => {
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector(getUserInterface);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   //const [isCreateAd, setIsCreateAd] = useState(false);
   //const [showModal, setShowModal] = useState(false);
   //const [error, setError] = useState(null);
@@ -63,17 +63,10 @@ const AdNew = () => {
     tags: formData.tags,
     photo: photo ? photo.photo : null,
   };
-  const handleSubmit = async event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    try {
-      const ad = await dispatch(adCreate(adNew));
-      console.log(ad);
-      navigate(`/adverts/${ad.id}`);
-    } catch (error) {
-      if (error.status === 401) {
-        navigate("/login");
-      }
-    }
+    dispatch(adCreate(adNew));
+
     //resetError();
 
     //setIsCreateAd(true);
@@ -82,7 +75,7 @@ const AdNew = () => {
     // setAd(createdAd);
 
     // setIsCreateAd(false);
-    setShowModal(true);
+    //setShowModal(true);
 
     //setError(error);
     //NOTE Restablecer el estado a false en caso de error

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 //import { deleteAd } from "../service";
 import Layout from "../../layout/Layout";
 import "../adsPage/AdsPage.css";
@@ -20,7 +20,7 @@ import {
 
 const AdDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   //const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const ad = useSelector(getAdId(id));
@@ -34,7 +34,7 @@ const AdDetail = () => {
 
   const handleShowModalconfirm = event => {
     dispatch(adDelete(id));
-    navigate("/adverts");
+
     dispatch(toggleModalDelete());
     console.log(id);
   };
@@ -49,15 +49,12 @@ const AdDetail = () => {
 
   useEffect(() => {
     dispatch(adLoad(id)).catch(error => {
-      if (error.status === 404) {
-        return navigate("/404");
-      }
       // dispatch(userInterfaceResetError());
     });
     // if (error.status === 404) {
     //   return navigate("/404");
     // }
-  }, [dispatch, id, navigate]);
+  }, [dispatch, id]);
 
   // useEffect(() => {
   //   getAd(params.id)

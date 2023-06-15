@@ -4,7 +4,7 @@ import Button from "../shared/Button";
 //import { login } from "./service";
 import "./LoginPage.css";
 import Layout from "../layout/Layout";
-import { useLocation, useNavigate } from "react-router-dom";
+//import { useLocation, useNavigate } from "react-router-dom";
 import ErrorModal from "../shared/modal/ErrorModal";
 import Spinner from "../shared/spinner/Spinner";
 import {
@@ -18,8 +18,6 @@ import { getUserInterface } from "../../store/selectors";
 
 function LoginPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
   const { isLoading, showModal, error } = useSelector(getUserInterface);
 
   const [credentials, setCredentials] = useState({
@@ -51,22 +49,15 @@ function LoginPage() {
   };
 
   const handleShowModal = () => {
-    //NOTE Redirigir al nombre de la ruta o a home
-
     dispatch(toggleModal());
-
-    const to = location.state?.from?.pathname || "/";
-    navigate(to);
   };
 
   const handleSubmit = async event => {
     event.preventDefault();
 
-    dispatch(authLogin(credentials))
-      .then(() => {
-        dispatch(toggleModal());
-      })
-      .catch(error => console.log(error));
+    dispatch(authLogin(credentials));
+
+    dispatch(toggleModal());
   };
 
   const buttonDisabled =
