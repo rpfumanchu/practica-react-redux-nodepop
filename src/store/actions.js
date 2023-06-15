@@ -1,10 +1,13 @@
-import { getAd, getAds, getTags } from "../components/Ads/service";
+import { deleteAd, getAd, getAds, getTags } from "../components/Ads/service";
 import { login } from "../components/auth/service";
 import { areAdsLoaded, areTagsLoaded, getAdId } from "./selectors";
 import {
   ADS_LOADED_FAILURE,
   ADS_LOADED_REQUEST,
   ADS_LOADED_SUCCESS,
+  AD_DELETED_FAILURE,
+  AD_DELETED_REQUEST,
+  AD_DELETED_SUCCESS,
   AD_FILTERING_MAX_PRICE,
   AD_FILTERING_MIN_PRICE,
   AD_FILTERING_NAME,
@@ -21,6 +24,7 @@ import {
   TAGS_LOADED_REQUEST,
   TAGS_LOADED_SUCCESS,
   TOGGLE_MODAL,
+  TOGGLE_MODAL_DELETE,
   TOGGLE_RESULT,
   USERINTERFACE_RESET_ERROR,
 } from "./types";
@@ -155,12 +159,49 @@ export const adLoad = id => async (dispatch, getState) => {
   }
 };
 
+export const adDeleteRequest = () => ({
+  type: AD_DELETED_REQUEST,
+});
+
+export const adDeleteSuccess = ad => ({
+  type: AD_DELETED_SUCCESS,
+  payload: ad,
+});
+
+export const adDeleteFailure = error => ({
+  type: AD_DELETED_FAILURE,
+  error: true,
+  payload: error,
+});
+
+//DONE borrado de anuncio por su id
+export const adDelete = ad => async (dispatch, getState) => {
+  // const isLoaded = getAdId(id)(getState());
+  // if (isLoaded) {
+  //   return;
+  // }
+  dispatch(adDeleteRequest());
+  try {
+    const deletedAd = await deleteAd(ad);
+    //const deletedAd = await getAd(id);
+    dispatch(adDeleteSuccess(deletedAd));
+    //return deleteAd;
+  } catch (error) {
+    dispatch(adDeleteFailure(error));
+    throw error;
+  }
+};
+
 export const userInterfaceResetError = value => ({
   type: USERINTERFACE_RESET_ERROR,
 });
 
 export const toggleModal = () => ({
   type: TOGGLE_MODAL,
+});
+
+export const toggleModalDelete = () => ({
+  type: TOGGLE_MODAL_DELETE,
 });
 
 export const toggleResult = value => ({

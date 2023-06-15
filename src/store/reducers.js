@@ -8,8 +8,10 @@ import {
   AD_LOADED_SUCCESS,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
+  SHOW_MODAL_DELETE,
   TAGS_LOADED_SUCCESS,
   TOGGLE_MODAL,
+  TOGGLE_MODAL_DELETE,
   TOGGLE_RESULT,
   USERINTERFACE_RESET_ERROR,
 } from "./types";
@@ -27,6 +29,8 @@ export const defaultState = {
   userInterface: {
     isLoading: false,
     showModal: false,
+    showModalDelete: true,
+    showDeleteMessage: null,
     searchResults: true,
     error: null,
   },
@@ -110,7 +114,7 @@ export function userInterface(state = defaultState.userInterface, action) {
   }
 
   if (/_SUCCESS$/.test(action.type)) {
-    return { ...state, isLoading: false, error: null };
+    return { ...state, isLoading: false, showModalDelete: true, error: null };
   }
 
   if (action.type === USERINTERFACE_RESET_ERROR) {
@@ -119,6 +123,12 @@ export function userInterface(state = defaultState.userInterface, action) {
 
   if (action.type === TOGGLE_MODAL) {
     return { ...state, showModal: !state.showModal };
+  }
+  if (action.type === TOGGLE_MODAL_DELETE) {
+    return { ...state, showModalDelete: !state.showModalDelete };
+  }
+  if (action.type === SHOW_MODAL_DELETE) {
+    return { ...state, showDeleteMessage: action.value };
   }
   if (action.type === TOGGLE_RESULT) {
     return { ...state, searchResults: action.value };

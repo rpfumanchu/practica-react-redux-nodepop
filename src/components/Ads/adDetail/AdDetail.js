@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteAd } from "../service";
+//import { deleteAd } from "../service";
 import Layout from "../../layout/Layout";
 import "../adsPage/AdsPage.css";
 import "./AdDetail.css";
@@ -10,43 +10,41 @@ import Modal from "../../shared/modal/Modal";
 import ErrorModal from "../../shared/modal/ErrorModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getAdId, getUserInterface } from "../../../store/selectors";
-import { adLoad, userInterfaceResetError } from "../../../store/actions";
+import {
+  adDelete,
+  adLoad,
+  toggleModalDelete,
+  userInterfaceResetError,
+  //userInterfaceResetError,
+} from "../../../store/actions";
 
 const AdDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [error, setError] = useState(null);
-  //const [ad, setAd] = useState(null);
-  const [deleteAdId, setDeleteAdId] = useState(null);
-  const [showModal, setShowModal] = useState(true);
-  const [showDeleteMessage, setShowDeleteMessage] = useState(false);
+  //const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const ad = useSelector(getAdId(id));
-  //const { error } = useSelector(getUserInterface);
+  const { showModalDelete, error } = useSelector(getUserInterface);
+  //console.log(ad);
 
   const resetError = () => {
-    setError(null);
-    //dispatch(userInterfaceResetError());
-  };
-
-  const handleDeleteMessage = () => {
-    setShowDeleteMessage(false);
-    navigate("/adverts");
+    //setError(null);
+    dispatch(userInterfaceResetError());
   };
 
   const handleShowModalconfirm = async event => {
-    const removeAd = await deleteAd(id);
-    setDeleteAdId(removeAd);
-    setShowDeleteMessage(true);
-    console.log(deleteAdId);
+    dispatch(adDelete(id));
+    navigate("/adverts");
+    dispatch(toggleModalDelete());
+    console.log(id);
   };
 
   const handleShowModalCancel = () => {
-    setShowModal(true);
+    dispatch(toggleModalDelete());
   };
 
   const handleButton = () => {
-    setShowModal(false);
+    dispatch(toggleModalDelete());
   };
 
   useEffect(() => {
@@ -54,6 +52,7 @@ const AdDetail = () => {
       if (error.status === 404) {
         return navigate("/404");
       }
+      dispatch(userInterfaceResetError());
     });
     // if (error.status === 404) {
     //   return navigate("/404");
@@ -73,61 +72,52 @@ const AdDetail = () => {
 
   return (
     <Layout title="Detalle del anuncio">
-      {(ad || error) && (
-        <div className="ad-detail">
-          <div className="ad">
-            <span className="text"> articulo {ad.name}</span>
-            <span className="text">
-              Estado: {ad.sale === true ? "Venta" : "Compra"}
-            </span>
-            <span className="text">{ad.price} Euros</span>
-            <span className="img">
-              {ad.photo === null ? (
-                <DefaultPhoto className="img" />
-              ) : (
-                <img
-                  className="img"
-                  src={ad.photo}
-                  alt="imagenes anuncios"></img>
-              )}
-            </span>
-
-            <span className="span tags">{ad.tags.join(", ")}</span>
-
-            {showModal ? (
-              <Button
-                className="delete-button"
-                variant="primary2"
-                width="button-form"
-                onClick={handleButton}
-                // disabled={buttonDisabled}>
-              >
-                Borrar
-              </Button>
-            ) : (
-              <Modal
-                title="Confirmar acciòn"
-                message="¿Estas seguro? "
-                onConfirm={handleShowModalconfirm}
-                onCancel={handleShowModalCancel}
-              />
-            )}
-          </div>
-          {showDeleteMessage && (
-            <ErrorModal
-              title="Borrar Anuncio"
-              message={"Fue eliminado correctamente"}
-              onCancel={handleDeleteMessage}
-            />
-          )}
-        </div>
-      )}
-      {error && (
+      {error ? (
         <ErrorModal
           title="Error"
           message={error.message}
           onCancel={resetError}
         />
+      ) : (
+        ad && (
+          <div className="ad-detail">
+            <div className="ad">
+              <span className="text">articulo {ad.name}</span>
+              <span className="text">
+                Estado: {ad.sale === true ? "Venta" : "Compra"}
+              </span>
+              <span className="text">{ad.price} Euros</span>
+              <span className="img">
+                {ad.photo === null ? (
+                  <DefaultPhoto className="img" />
+                ) : (
+                  <img
+                    className="img"
+                    src={ad.photo}
+                    alt="imagenes anuncios"></img>
+                )}
+              </span>
+              <span className="span tags">{ad.tags.join(", ")}</span>
+
+              {showModalDelete ? (
+                <Button
+                  className="delete-button"
+                  variant="primary2"
+                  width="button-form"
+                  onClick={handleButton}>
+                  Borrar
+                </Button>
+              ) : (
+                <Modal
+                  title="Confirmar acción"
+                  message="¿Estás seguro?"
+                  onConfirm={handleShowModalconfirm}
+                  onCancel={handleShowModalCancel}
+                />
+              )}
+            </div>
+          </div>
+        )
       )}
     </Layout>
   );

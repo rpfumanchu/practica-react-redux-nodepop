@@ -20,7 +20,8 @@ const Page404 = () => {
           <h2>PAGE</h2>
           <h2>NOT</h2>
           <h2>FOUND</h2>
-          <h3>BACK TO HOME?</h3>
+          <h3>BACK TO </h3>
+          <h3>HOME?</h3>
           <Link className="yes" to="/">
             Yes
           </Link>

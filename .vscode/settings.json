@@ -13,6 +13,7 @@
     "añado",
     "Articulo",
     "artículo",
+    "borrado",
     "Borrar",
     "carga",
     "Carga",
@@ -80,7 +81,5 @@
     "usuario",
     "Venta"
   ],
-  "cSpell.ignoreWords": [
-    "tipo"
-  ]
+  "cSpell.ignoreWords": ["tipo"]
 }
