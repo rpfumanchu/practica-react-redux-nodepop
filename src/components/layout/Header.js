@@ -3,7 +3,7 @@ import classNames from "classnames";
 import Button from "../shared/Button";
 import "./Header.css";
 import { ReactComponent as Icon } from "../../assets/nodepop.svg";
-import { logout } from "../auth/service";
+//import { logout } from "../auth/service";
 import { Link, NavLink } from "react-router-dom";
 import Modal from "../shared/modal/Modal";
 import { authLogout, toggleModal } from "../../store/actions";
@@ -21,7 +21,6 @@ const Header = ({ className }) => {
   };
 
   const handleShowModalconfirm = async event => {
-    await logout();
     onLogout();
     dispatch(toggleModal());
   };

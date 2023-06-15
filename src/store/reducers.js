@@ -1,5 +1,6 @@
 import {
   ADS_LOADED_SUCCESS,
+  AD_DELETED_SUCCESS,
   AD_FILTERING_MAX_PRICE,
   AD_FILTERING_MIN_PRICE,
   AD_FILTERING_NAME,
@@ -62,6 +63,10 @@ export function ads(state = defaultState.ads, action) {
   if (action.type === AD_LOADED_SUCCESS) {
     return { ...state, data: [action.payload] };
   }
+  if (action.type === AD_DELETED_SUCCESS) {
+    return { ...state, areLoaded: false };
+  }
+
   return state;
 }
 

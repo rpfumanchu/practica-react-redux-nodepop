@@ -59,9 +59,17 @@ export const authLogin =
   };
 
 //NOTE Desloguearse
-export const authLogout = () => ({
+export const authLogoutSuccess = () => ({
   type: AUTH_LOGOUT,
 });
+
+//DONE desloguearse
+export const authLogout =
+  () =>
+  async (dispatch, _getState, { auth }) => {
+    await auth.logout();
+    dispatch(authLogoutSuccess());
+  };
 
 //NOTE manejo de la carga de anuncios
 export const adsLoadedRequest = () => ({
@@ -184,7 +192,7 @@ export const adDeleteFailure = error => ({
 export const adDelete =
   ad =>
   async (dispatch, getState, { ads: adsService }) => {
-    // const isLoaded = getAdId(id)(getState());
+    // const isLoaded = getAdId(ad)(getState());
     // if (isLoaded) {
     //   return;
     // }

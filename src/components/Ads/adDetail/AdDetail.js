@@ -52,7 +52,7 @@ const AdDetail = () => {
       if (error.status === 404) {
         return navigate("/404");
       }
-      dispatch(userInterfaceResetError());
+      // dispatch(userInterfaceResetError());
     });
     // if (error.status === 404) {
     //   return navigate("/404");
