@@ -1,5 +1,3 @@
-import { deleteAd, getAd, getAds, getTags } from "../components/Ads/service";
-import { login } from "../components/auth/service";
 import { areAdsLoaded, areTagsLoaded, getAdId } from "./selectors";
 import {
   ADS_LOADED_FAILURE,
@@ -45,18 +43,20 @@ export const authLoginFailure = error => ({
 });
 
 //DONE manejo el login
-export const authLogin = credentials => async dispatch => {
-  dispatch(authLoginRequest());
-  try {
-    await login(credentials);
+export const authLogin =
+  credentials =>
+  async (dispatch, _getState, { auth }) => {
+    dispatch(authLoginRequest());
+    try {
+      await auth.login(credentials);
 
-    //NOTE ahora estoy logueado
-    dispatch(authLoginSuccess());
-  } catch (error) {
-    dispatch(authLoginFailure(error));
-    throw error;
-  }
-};
+      //NOTE ahora estoy logueado
+      dispatch(authLoginSuccess());
+    } catch (error) {
+      dispatch(authLoginFailure(error));
+      throw error;
+    }
+  };
 
 //NOTE Desloguearse
 export const authLogout = () => ({
@@ -80,20 +80,22 @@ export const adsLoadedFailure = error => ({
 });
 
 //DONE Carga de anuncios
-export const adsLoaded = () => async (dispatch, getState) => {
-  if (areAdsLoaded(getState())) {
-    return;
-  }
+export const adsLoaded =
+  () =>
+  async (dispatch, getState, { ads: adsService }) => {
+    if (areAdsLoaded(getState())) {
+      return;
+    }
 
-  dispatch(adsLoadedRequest());
-  try {
-    const ads = await getAds();
-    dispatch(adsLoadedSuccess(ads));
-  } catch (error) {
-    dispatch(adsLoadedFailure(error));
-    throw error;
-  }
-};
+    dispatch(adsLoadedRequest());
+    try {
+      const ads = await adsService.getAds();
+      dispatch(adsLoadedSuccess(ads));
+    } catch (error) {
+      dispatch(adsLoadedFailure(error));
+      throw error;
+    }
+  };
 
 //NOTE manejo los tags
 export const tagsLoadedRequest = () => ({
@@ -112,20 +114,22 @@ export const tagsLoadedFailure = error => ({
 });
 
 //DONE accedo a los distintos tags
-export const tagsLoaded = () => async (dispatch, getState) => {
-  if (areTagsLoaded(getState())) {
-    return;
-  }
+export const tagsLoaded =
+  () =>
+  async (dispatch, getState, { ads: adsService }) => {
+    if (areTagsLoaded(getState())) {
+      return;
+    }
 
-  dispatch(tagsLoadedRequest());
-  try {
-    const tags = await getTags();
-    dispatch(tagsLoadedSuccess(tags));
-  } catch (error) {
-    dispatch(tagsLoadedFailure(error));
-    throw error;
-  }
-};
+    dispatch(tagsLoadedRequest());
+    try {
+      const tags = await adsService.getTags();
+      dispatch(tagsLoadedSuccess(tags));
+    } catch (error) {
+      dispatch(tagsLoadedFailure(error));
+      throw error;
+    }
+  };
 
 //NOTE manejo de un anuncio
 export const adLoadedRequest = () => ({
@@ -144,20 +148,22 @@ export const adLoadedFailure = error => ({
 });
 
 //DONE anuncio por su id
-export const adLoad = id => async (dispatch, getState) => {
-  const isLoaded = getAdId(id)(getState());
-  if (isLoaded) {
-    return;
-  }
-  dispatch(adLoadedRequest());
-  try {
-    const ad = await getAd(id);
-    dispatch(adLoadedSuccess(ad));
-  } catch (error) {
-    dispatch(adLoadedFailure(error));
-    throw error;
-  }
-};
+export const adLoad =
+  id =>
+  async (dispatch, getState, { ads: adsService }) => {
+    const isLoaded = getAdId(id)(getState());
+    if (isLoaded) {
+      return;
+    }
+    dispatch(adLoadedRequest());
+    try {
+      const ad = await adsService.getAd(id);
+      dispatch(adLoadedSuccess(ad));
+    } catch (error) {
+      dispatch(adLoadedFailure(error));
+      throw error;
+    }
+  };
 
 export const adDeleteRequest = () => ({
   type: AD_DELETED_REQUEST,
@@ -175,22 +181,24 @@ export const adDeleteFailure = error => ({
 });
 
 //DONE borrado de anuncio por su id
-export const adDelete = ad => async (dispatch, getState) => {
-  // const isLoaded = getAdId(id)(getState());
-  // if (isLoaded) {
-  //   return;
-  // }
-  dispatch(adDeleteRequest());
-  try {
-    const deletedAd = await deleteAd(ad);
-    //const deletedAd = await getAd(id);
-    dispatch(adDeleteSuccess(deletedAd));
-    //return deleteAd;
-  } catch (error) {
-    dispatch(adDeleteFailure(error));
-    throw error;
-  }
-};
+export const adDelete =
+  ad =>
+  async (dispatch, getState, { ads: adsService }) => {
+    // const isLoaded = getAdId(id)(getState());
+    // if (isLoaded) {
+    //   return;
+    // }
+    dispatch(adDeleteRequest());
+    try {
+      const deletedAd = await adsService.deleteAd(ad);
+      //const deletedAd = await getAd(id);
+      dispatch(adDeleteSuccess(deletedAd));
+      //return deleteAd;
+    } catch (error) {
+      dispatch(adDeleteFailure(error));
+      throw error;
+    }
+  };
 
 export const userInterfaceResetError = value => ({
   type: USERINTERFACE_RESET_ERROR,
