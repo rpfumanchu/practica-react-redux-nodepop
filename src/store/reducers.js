@@ -1,5 +1,6 @@
 import {
   ADS_LOADED_SUCCESS,
+  AD_CREATED_SUCCESS,
   AD_DELETED_SUCCESS,
   AD_FILTERING_MAX_PRICE,
   AD_FILTERING_MIN_PRICE,
@@ -64,7 +65,11 @@ export function ads(state = defaultState.ads, action) {
     return { ...state, data: [action.payload] };
   }
   if (action.type === AD_DELETED_SUCCESS) {
-    return { ...state, areLoaded: false };
+    const updatedData = state.data.filter(ad => ad.id !== action.payload);
+    return { ...state, data: updatedData };
+  }
+  if (action.type === AD_CREATED_SUCCESS) {
+    return { ...state, data: [action.payload].concat(state.data) };
   }
 
   return state;

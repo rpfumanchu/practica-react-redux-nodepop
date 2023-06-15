@@ -14,11 +14,12 @@ const composeEnhancers = composeWithDevTools({
   actionCreators,
 });
 
-const middleware = [thunk.withExtraArgument({ auth, ads })];
-
 //NOTE añado devtools
 //NOTE uso preloadedState para tener un estado precargado
-export default function configureStore(preloadedState) {
+export default function configureStore(preloadedState, { router }) {
+  const middleware = [
+    thunk.withExtraArgument({ sercice: { auth, ads }, router }),
+  ];
   const store = createStore(
     reducer,
     preloadedState,

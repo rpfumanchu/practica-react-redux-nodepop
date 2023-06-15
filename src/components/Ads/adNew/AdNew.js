@@ -2,27 +2,33 @@ import Layout from "../../layout/Layout";
 import "./AdNew.css";
 import Button from "../../shared/Button";
 import { useState } from "react";
-import { getForm } from "../service";
+//import { getForm } from "../service";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../shared/spinner/Spinner";
 import DrawTags from "../drawTags/DrawTags";
 import ErrorModal from "../../shared/modal/ErrorModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInterface } from "../../../store/selectors";
+import { adCreate, userInterfaceResetError } from "../../../store/actions";
 
 const AdNew = () => {
+  const dispatch = useDispatch();
+  const { isLoading, error } = useSelector(getUserInterface);
   const navigate = useNavigate();
-  const [isCreateAd, setIsCreateAd] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [error, setError] = useState(null);
-  const [ad, setAd] = useState({});
+  //const [isCreateAd, setIsCreateAd] = useState(false);
+  //const [showModal, setShowModal] = useState(false);
+  //const [error, setError] = useState(null);
+  //const [ad, setAd] = useState({});
 
   const resetError = () => {
-    setError(null);
+    dispatch(userInterfaceResetError);
+    //setError(null);
   };
 
-  const handleShowModal = () => {
-    setShowModal(false);
-    navigate(`/adverts/${ad.id}`);
-  };
+  // const handleShowModal = () => {
+  //   setShowModal(false);
+  //   //navigate(`/adverts/${ad.id}`);
+  // };
 
   const [photo, setPhoto] = useState(null);
   const [formData, setFormData] = useState({
@@ -50,30 +56,37 @@ const AdNew = () => {
     setPhoto({ ...photo, photo: e.target.files[0] });
   };
 
+  const adNew = {
+    name: formData.name,
+    sale: formData.sale,
+    price: formData.price,
+    tags: formData.tags,
+    photo: photo ? photo.photo : null,
+  };
   const handleSubmit = async event => {
     event.preventDefault();
-    resetError();
     try {
-      setIsCreateAd(true);
-
-      const adNew = {
-        name: formData.name,
-        sale: formData.sale,
-        price: formData.price,
-        tags: formData.tags,
-        photo: photo ? photo.photo : null,
-      };
-
-      const createdAd = await getForm(adNew);
-      setAd(createdAd);
-
-      setIsCreateAd(false);
-      setShowModal(true);
+      const ad = await dispatch(adCreate(adNew));
+      console.log(ad);
+      navigate(`/adverts/${ad.id}`);
     } catch (error) {
-      setError(error);
-      //NOTE Restablecer el estado a false en caso de error
-      setIsCreateAd(false);
+      if (error.status === 401) {
+        navigate("/login");
+      }
     }
+    //resetError();
+
+    //setIsCreateAd(true);
+
+    //const createdAd = await getForm(adNew);
+    // setAd(createdAd);
+
+    // setIsCreateAd(false);
+    setShowModal(true);
+
+    //setError(error);
+    //NOTE Restablecer el estado a false en caso de error
+    // setIsCreateAd(false);
   };
 
   const buttonDisabled =
@@ -81,7 +94,7 @@ const AdNew = () => {
 
   return (
     <Layout title="sube un anuncio">
-      {isCreateAd ? (
+      {isLoading ? (
         <Spinner message="Cargando..." />
       ) : (
         <form
@@ -158,13 +171,13 @@ const AdNew = () => {
         </form>
       )}
 
-      {showModal && (
+      {/* {showModal && (
         <ErrorModal
           title="Anuncio"
           message={"Acabas de crear un nuevo anuncio"}
           onCancel={handleShowModal}
         />
-      )}
+      )} */}
 
       {error && (
         <ErrorModal

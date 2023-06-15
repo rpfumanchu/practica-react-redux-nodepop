@@ -32,7 +32,7 @@ const AdDetail = () => {
     dispatch(userInterfaceResetError());
   };
 
-  const handleShowModalconfirm = async event => {
+  const handleShowModalconfirm = event => {
     dispatch(adDelete(id));
     navigate("/adverts");
     dispatch(toggleModalDelete());

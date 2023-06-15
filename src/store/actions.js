@@ -3,6 +3,9 @@ import {
   ADS_LOADED_FAILURE,
   ADS_LOADED_REQUEST,
   ADS_LOADED_SUCCESS,
+  AD_CREATED_FAILURE,
+  AD_CREATED_REQUEST,
+  AD_CREATED_SUCCESS,
   AD_DELETED_FAILURE,
   AD_DELETED_REQUEST,
   AD_DELETED_SUCCESS,
@@ -45,13 +48,15 @@ export const authLoginFailure = error => ({
 //DONE manejo el login
 export const authLogin =
   credentials =>
-  async (dispatch, _getState, { auth }) => {
+  async (dispatch, _getState, { service, router }) => {
     dispatch(authLoginRequest());
     try {
-      await auth.login(credentials);
+      await service.auth.login(credentials);
 
       //NOTE ahora estoy logueado
       dispatch(authLoginSuccess());
+      const to = router.state?.from?.pathname || "/";
+      router.navigate(to);
     } catch (error) {
       dispatch(authLoginFailure(error));
       throw error;
@@ -144,9 +149,9 @@ export const adLoadedRequest = () => ({
   type: AD_LOADED_REQUEST,
 });
 
-export const adLoadedSuccess = ad => ({
+export const adLoadedSuccess = ads => ({
   type: AD_LOADED_SUCCESS,
-  payload: ad,
+  payload: ads,
 });
 
 export const adLoadedFailure = error => ({
@@ -173,13 +178,45 @@ export const adLoad =
     }
   };
 
+//NOTE crear
+export const adCreatedRequest = () => ({
+  type: AD_CREATED_REQUEST,
+});
+
+export const adCreatedSuccess = ads => ({
+  type: AD_CREATED_SUCCESS,
+  payload: ads,
+});
+
+export const adCreatedFailure = error => ({
+  type: AD_CREATED_FAILURE,
+  error: true,
+  payload: error,
+});
+
+//DONE Crear anuncio
+export const adCreate =
+  ad =>
+  async (dispatch, _getState, { ads: adsService }) => {
+    dispatch(adCreatedRequest());
+    try {
+      const { id } = await adsService.getForm(ad);
+      const createdAds = await adsService.getAd(id);
+      dispatch(adCreatedSuccess(createdAds));
+      return createdAds;
+    } catch (error) {
+      dispatch(adCreatedFailure(error));
+      throw error;
+    }
+  };
+
 export const adDeleteRequest = () => ({
   type: AD_DELETED_REQUEST,
 });
 
-export const adDeleteSuccess = ad => ({
+export const adDeleteSuccess = id => ({
   type: AD_DELETED_SUCCESS,
-  payload: ad,
+  payload: id,
 });
 
 export const adDeleteFailure = error => ({
@@ -190,7 +227,7 @@ export const adDeleteFailure = error => ({
 
 //DONE borrado de anuncio por su id
 export const adDelete =
-  ad =>
+  id =>
   async (dispatch, getState, { ads: adsService }) => {
     // const isLoaded = getAdId(ad)(getState());
     // if (isLoaded) {
@@ -198,10 +235,10 @@ export const adDelete =
     // }
     dispatch(adDeleteRequest());
     try {
-      const deletedAd = await adsService.deleteAd(ad);
+      await adsService.deleteAd(id);
       //const deletedAd = await getAd(id);
-      dispatch(adDeleteSuccess(deletedAd));
-      //return deleteAd;
+      dispatch(adDeleteSuccess(id));
+      //return deletedAd;
     } catch (error) {
       dispatch(adDeleteFailure(error));
       throw error;
