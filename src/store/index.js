@@ -14,11 +14,25 @@ const composeEnhancers = composeWithDevTools({
   actionCreators,
 });
 
+//DONE middleware para manejar las redirecciones cuando hay fallo
+const failureRedirects = (router, redirectsMap) => () => next => action => {
+  const result = next(action);
+
+  if (action.error) {
+    const redirect = redirectsMap[action.payload.status];
+    if (redirect) {
+      router.navigate(redirect);
+    }
+  }
+  return result;
+};
+
 //NOTE añado devtools
 //NOTE uso preloadedState para tener un estado precargado
 export default function configureStore(preloadedState, { router }) {
   const middleware = [
     thunk.withExtraArgument({ service: { auth, ads }, router }),
+    failureRedirects(router, { 401: "/login", 404: "/404" }),
   ];
   const store = createStore(
     reducer,

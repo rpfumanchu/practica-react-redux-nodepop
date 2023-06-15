@@ -57,7 +57,7 @@ function LoginPage() {
 
     dispatch(authLogin(credentials));
 
-    dispatch(toggleModal());
+    //dispatch(toggleModal());
   };
 
   const buttonDisabled =

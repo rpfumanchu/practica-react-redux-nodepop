@@ -124,7 +124,7 @@ export function userInterface(state = defaultState.userInterface, action) {
   }
 
   if (/_SUCCESS$/.test(action.type)) {
-    return { ...state, isLoading: false, showModalDelete: true, error: null };
+    return { ...state, isLoading: false, error: null };
   }
 
   if (action.type === USERINTERFACE_RESET_ERROR) {

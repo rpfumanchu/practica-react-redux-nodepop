@@ -56,7 +56,7 @@ export const authLogin =
       //NOTE ahora estoy logueado
       dispatch(authLoginSuccess());
       //NOTE Redirigir al nombre de la ruta o a home
-      const to = router.state?.from?.pathname || "/";
+      const to = router.state.location.state?.from?.pathname || "/";
       router.navigate(to);
     } catch (error) {
       dispatch(authLoginFailure(error));
@@ -164,7 +164,7 @@ export const adLoadedFailure = error => ({
 //DONE anuncio por su id
 export const adLoad =
   id =>
-  async (dispatch, getState, { service, router }) => {
+  async (dispatch, getState, { service }) => {
     const isLoaded = getAdId(id)(getState());
     if (isLoaded) {
       return;
@@ -175,9 +175,7 @@ export const adLoad =
       dispatch(adLoadedSuccess(ad));
     } catch (error) {
       dispatch(adLoadedFailure(error));
-      if (error.status === 404) {
-        return router.navigate("/404");
-      }
+
       //throw error;
     }
   };
@@ -211,10 +209,8 @@ export const adCreate =
       return createdAds;
     } catch (error) {
       dispatch(adCreatedFailure(error));
-      if (error.status === 401) {
-        router.navigate("/login");
-      }
-      throw error;
+
+      //throw error;
     }
   };
 
