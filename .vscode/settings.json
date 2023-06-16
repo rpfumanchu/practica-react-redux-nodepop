@@ -1,0 +1,7 @@
+{
+  "jest.coverageColors": {
+    "high": "red"
+  },
+  "jest.disabledWorkspaceFolders": [],
+  "jest.showCoverageOnLoad": true
+}

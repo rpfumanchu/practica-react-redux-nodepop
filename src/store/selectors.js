@@ -1,8 +1,9 @@
 export const getIsLogged = state => state.auth;
 
-export const getAllAds = state => state.ads.data;
+export const getAllAds = state => (state.ads.areLoaded ? state.ads.data : []);
 
-export const getAllTags = state => state.tags.data;
+export const getAllTags = state =>
+  state.tags.areLoaded ? state.tags.data : [];
 
 export const getAdFiltering = state => state.filtered;
 
