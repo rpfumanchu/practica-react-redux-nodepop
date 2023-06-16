@@ -10,6 +10,7 @@ import {
   AD_LOADED_SUCCESS,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
+  SET_CREDENTIALS,
   SHOW_MODAL_DELETE,
   TAGS_LOADED_SUCCESS,
   TOGGLE_MODAL,
@@ -20,6 +21,11 @@ import {
 
 export const defaultState = {
   auth: false,
+  credentials: {
+    email: "",
+    password: "",
+    rememberMe: false,
+  },
   ads: {
     areLoaded: false,
     data: [],
@@ -32,7 +38,6 @@ export const defaultState = {
     isLoading: false,
     showModal: false,
     showModalDelete: true,
-    showDeleteMessage: null,
     searchResults: true,
     error: null,
   },
@@ -112,6 +117,18 @@ export function filtered(state = defaultState.filtered, action) {
     default:
       return state;
   }
+}
+
+export function credentials(state = defaultState.credentials, action) {
+  if (action.type === SET_CREDENTIALS) {
+    return {
+      ...state,
+      email: action.payload.email,
+      password: action.payload.password,
+      rememberMe: action.payload.rememberMe,
+    };
+  }
+  return state;
 }
 
 export function userInterface(state = defaultState.userInterface, action) {

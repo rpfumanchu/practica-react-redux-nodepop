@@ -21,6 +21,7 @@ import {
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
+  SET_CREDENTIALS,
   TAGS_LOADED_FAILURE,
   TAGS_LOADED_REQUEST,
   TAGS_LOADED_SUCCESS,
@@ -35,6 +36,10 @@ export const authLoginRequest = () => ({
   type: AUTH_LOGIN_REQUEST,
 });
 
+export const setCredentials = credentials => ({
+  type: SET_CREDENTIALS,
+  payload: credentials,
+});
 export const authLoginSuccess = () => ({
   type: AUTH_LOGIN_SUCCESS,
 });
@@ -60,7 +65,7 @@ export const authLogin =
       router.navigate(to);
     } catch (error) {
       dispatch(authLoginFailure(error));
-      throw error;
+      //throw error;
     }
   };
 

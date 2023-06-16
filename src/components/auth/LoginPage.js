@@ -1,30 +1,23 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../shared/Button";
-//import { login } from "./service";
 import "./LoginPage.css";
 import Layout from "../layout/Layout";
-//import { useLocation, useNavigate } from "react-router-dom";
 import ErrorModal from "../shared/modal/ErrorModal";
 import Spinner from "../shared/spinner/Spinner";
 import {
   authLogin,
+  setCredentials,
   toggleModal,
   userInterfaceResetError,
 } from "../../store/actions";
-import { getUserInterface } from "../../store/selectors";
+import { getCredentials, getUserInterface } from "../../store/selectors";
 
 //DONE Loguear con email y password y un checkbox para dar la opción de persistir el token, además manejar errores y feedback al usuario. Al hacer Login quiero enviar al usuario a la página a la que queria ir.
 
 function LoginPage() {
   const dispatch = useDispatch();
   const { isLoading, showModal, error } = useSelector(getUserInterface);
-
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-    rememberMe: false,
-  });
+  const credentials = useSelector(getCredentials);
 
   const resetError = () => {
     dispatch(userInterfaceResetError());
@@ -36,16 +29,11 @@ function LoginPage() {
     const { name, value, type, checked } = event.target;
 
     if (type === "checkbox") {
-      setCredentials(prevCredentials => ({
-        ...prevCredentials,
-        [name]: checked,
-      }));
+      dispatch(setCredentials({ ...credentials, [name]: checked }));
     } else {
-      setCredentials(prevCredentials => ({
-        ...prevCredentials,
-        [name]: value,
-      }));
+      dispatch(setCredentials({ ...credentials, [name]: value }));
     }
+    console.log(credentials);
   };
 
   const handleShowModal = () => {
