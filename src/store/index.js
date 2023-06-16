@@ -2,8 +2,9 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
 import thunk from "redux-thunk";
 
-import * as auth from "../components/auth/service";
-import * as ads from "../components/Ads/service";
+import * as service from "../service/index";
+// import * as auth from "../service/auth";
+// import * as ads from "../service/ads";
 
 import * as actionCreators from "./actions";
 import * as reducers from "./reducers";
@@ -31,7 +32,7 @@ const failureRedirects = (router, redirectsMap) => () => next => action => {
 //NOTE uso preloadedState para tener un estado precargado
 export default function configureStore(preloadedState, { router }) {
   const middleware = [
-    thunk.withExtraArgument({ service: { auth, ads }, router }),
+    thunk.withExtraArgument({ service, router }),
     failureRedirects(router, { 401: "/login", 404: "/404" }),
   ];
   const store = createStore(

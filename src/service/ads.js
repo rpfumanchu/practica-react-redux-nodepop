@@ -1,4 +1,4 @@
-import client from "../../api/client";
+import client from "../api/client";
 
 const adsUrl = "/api/v1/adverts";
 
