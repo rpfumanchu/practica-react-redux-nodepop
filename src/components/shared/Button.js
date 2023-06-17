@@ -25,7 +25,7 @@ const Button = styled.button`
   outline-style: none;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   padding: 8px 30px;
-  pointer-events: ${props => (props.disabled ? "none" : "auto")};
+
   text-decoration: none;
   transition: background-color 0.5s;
 

@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginPage snapshot 1`] = `
+<div>
+  <div
+    class="layout"
+  >
+    <header>
+      <nav
+        class="header-navbar layout-header"
+      >
+        <a
+          href="/adverts/home"
+        >
+          <h4
+            class="navbar-h4"
+          >
+            NodePop
+          </h4>
+        </a>
+        <ul
+          class="navbar-list"
+        >
+          <li
+            class="navbar-list-item"
+          >
+            <a
+              class="navbar-list-item"
+              href="/adverts/new"
+            >
+              New
+            </a>
+            <a
+              class="navbar-list-item"
+              href="/adverts"
+            >
+              Latest Ad
+            </a>
+            <a
+              class="sc-beqWaB loJBsH"
+              href="/login"
+              variant="primary"
+            >
+              Login
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div
+        class="title"
+      >
+        <svg
+          class="logo"
+        >
+          nodepop.svg
+        </svg>
+        <h1
+          class="title-h1"
+        >
+          Práctica NodePop
+        </h1>
+        <svg
+          class="logo"
+        >
+          nodepop.svg
+        </svg>
+      </div>
+      <div />
+    </header>
+    <main
+      class="layout-main"
+    >
+      <h2
+        class="layout-title"
+      >
+        Login Page
+      </h2>
+      <div>
+        <form
+          class="container-form"
+        >
+          <label
+            class="form-label"
+            for="email"
+          >
+            Email
+          </label>
+          <input
+            class="form-input"
+            id="email"
+            name="email"
+            required=""
+            type="text"
+            value=""
+          />
+          <label
+            class="form-label"
+            for="password"
+          >
+            Password
+          </label>
+          <input
+            class="form-input"
+            id="password"
+            name="password"
+            required=""
+            type="password"
+            value=""
+          />
+          <label
+            for="rememberMe"
+          >
+            rememberMe
+            <input
+              id="rememberMe"
+              name="rememberMe"
+              type="checkbox"
+            />
+          </label>
+          <button
+            class="sc-beqWaB ftSVgc"
+            data-testid="button"
+            disabled=""
+            type="submit"
+            width="button-form"
+          >
+            Log in
+          </button>
+        </form>
+      </div>
+    </main>
+    <div
+      class="footer layout-footer"
+    >
+      <p
+        class="p"
+      >
+        NodePop®. Todos los derechos reservados 2023
+      </p>
+      <svg
+        class="logo-footer"
+      >
+        nodepop.svg
+      </svg>
+    </div>
+  </div>
+</div>
+`;

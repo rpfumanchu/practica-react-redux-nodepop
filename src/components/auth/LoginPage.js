@@ -33,7 +33,6 @@ function LoginPage() {
     } else {
       dispatch(setCredentials({ ...credentials, [name]: value }));
     }
-    console.log(credentials);
   };
 
   const handleShowModal = () => {
@@ -58,8 +57,11 @@ function LoginPage() {
           <Spinner message="cargando..." />
         ) : (
           <form onSubmit={handleSubmit} className="container-form">
-            <label className="form-label">Email</label>
+            <label className="form-label" htmlFor="email">
+              Email
+            </label>
             <input
+              id="email"
               className="form-input"
               type="text"
               name="email"
@@ -67,8 +69,11 @@ function LoginPage() {
               value={credentials.email}
               required
             />
-            <label className="form-label">Password</label>
+            <label className="form-label" htmlFor="password">
+              Password
+            </label>
             <input
+              id="password"
               className="form-input"
               type="password"
               name="password"
@@ -76,9 +81,10 @@ function LoginPage() {
               value={credentials.password}
               required
             />
-            <label>
-              Guardar sesiòn
+            <label htmlFor="rememberMe">
+              rememberMe
               <input
+                id="rememberMe"
                 type="checkbox"
                 name="rememberMe"
                 checked={credentials.rememberMe}
@@ -86,6 +92,7 @@ function LoginPage() {
               />
             </label>
             <Button
+              data-testid="button"
               type="submit"
               variant="primary"
               width="button-form"
