@@ -9,6 +9,7 @@ import configureStore from "./store";
 import Root from "./root";
 import { createBrowserRouter } from "react-router-dom";
 
+// obtener la información del LocalStorage
 const accessToken = storage.get("auth");
 if (accessToken) {
   setAuthorizationHeader(accessToken);

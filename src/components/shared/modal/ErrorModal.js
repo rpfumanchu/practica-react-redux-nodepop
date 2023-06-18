@@ -10,7 +10,10 @@ function ErrorModal(props) {
         <div className="modal-header">{title}</div>
         <div className="modal-body">{message}</div>
         <div className="modal-errorButton">
-          <Button onClick={onCancel} variant="primary2">
+          <Button
+            data-testid="modalButton"
+            onClick={onCancel}
+            variant="primary2">
             Click
           </Button>
         </div>

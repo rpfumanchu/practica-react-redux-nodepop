@@ -35,23 +35,29 @@ describe("LoginPage", () => {
   });
 
   test("shoul dispatch authLogin action", () => {
-    const email = "rober";
-    const password = "123";
-    const checkbox = true;
+    const credentials = {
+      email: "rober",
+      password: "123",
+      rememberMe: true,
+    };
+
+    // // Simulate the functions
+    // const authLoginSpy = jest.spyOn(authLogin, "mockImplementationOnce");
+    // authLoginSpy.mockImplementationOnce(mockedCredentials => {
+    //   console.log("authLogin called with credentials:", mockedCredentials);
+    // });
+    // userInterfaceResetError.mockImplementation(() => {});
 
     //NOTE renderizo el componente
     renderComponent();
 
     const emailInput = screen.getByLabelText(/Email/);
-
     const passwordInput = screen.getByLabelText(/Password/);
-
     const checkboxInput = screen.getByLabelText(/rememberMe/);
-
     const submitButton = screen.getByRole("button");
     //const submitButton = screen.getByTestId("button");
 
-    console.log(submitButton);
+    //console.log(submitButton);
 
     expect(submitButton).toBeDisabled();
 
@@ -62,25 +68,33 @@ describe("LoginPage", () => {
 
     //fireEvent.change(checkboxInput, { target: { checked: checkbox } });
 
-    userEvent.type(emailInput, email);
-    userEvent.type(passwordInput, password);
-    userEvent.type(checkboxInput, checkbox);
+    userEvent.type(emailInput, credentials.email);
+    userEvent.type(passwordInput, credentials.password);
+    userEvent.click(checkboxInput, credentials.rememberMe);
 
-    console.log("averque", email, password, checkbox);
+    // console.log(
+    //   "averque",
+    //   emailInput,
+    //   passwordInput,
+    //   checkboxInput,
+    //   credentials,
+    // );
 
-    expect(screen.getByLabelText(/Email/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Password/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/rememberMe/)).toBeInTheDocument();
-    expect(screen.getByRole("button")).toBeInTheDocument();
+    // expect(screen.getByLabelText(/Email/)).toBeInTheDocument();
+    // expect(screen.getByLabelText(/Password/)).toBeInTheDocument();
+    // expect(screen.getByLabelText(/rememberMe/)).toBeInTheDocument();
+    // expect(screen.getByRole("button")).toBeInTheDocument();
 
-    //expect(submitButton).toBeEnabled();
+    expect(submitButton).toBeEnabled();
 
     //fireEvent.click(submitButton);
 
     userEvent.click(submitButton);
-    expect(authLogin).toHaveBeenCalledWith({ email, password, checkbox });
+    console.log(authLogin);
+    expect(authLogin).toHaveBeenCalledWith(credentials);
   });
 
+  //NOTE
   test("should display an error", () => {
     const error = { message: "Unauthorized" };
     renderComponent(error);
@@ -88,8 +102,10 @@ describe("LoginPage", () => {
     const errorElement = screen.getByText(error.message);
     expect(errorElement).toBeInTheDocument();
 
+    const modalButton = screen.getByTestId("modalButton");
+
     // fireEvent.click(errorElement);
-    userEvent.click(errorElement);
+    userEvent.click(modalButton);
 
     expect(userInterfaceResetError).toHaveBeenCalled();
   });
