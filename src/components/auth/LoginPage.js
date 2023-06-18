@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../shared/Button";
-//import { login } from "./service";
 import "./LoginPage.css";
 import Layout from "../layout/Layout";
-//import { useLocation, useNavigate } from "react-router-dom";
 import ErrorModal from "../shared/modal/ErrorModal";
 import Spinner from "../shared/spinner/Spinner";
 import {
@@ -30,8 +28,6 @@ function LoginPage() {
     dispatch(userInterfaceResetError());
   };
 
-  //const onLogin = () => dispatch(authLoginSuccess());
-
   const handleChange = event => {
     const { name, value, type, checked } = event.target;
 
@@ -49,8 +45,6 @@ function LoginPage() {
     event.preventDefault();
 
     dispatch(authLogin(credentials));
-
-    //dispatch(toggleModal());
   };
 
   const buttonDisabled =

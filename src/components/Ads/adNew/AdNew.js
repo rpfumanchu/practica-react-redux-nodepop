@@ -2,8 +2,6 @@ import Layout from "../../layout/Layout";
 import "./AdNew.css";
 import Button from "../../shared/Button";
 import { useState } from "react";
-//import { getForm } from "../service";
-//import { useNavigate } from "react-router-dom";
 import Spinner from "../../shared/spinner/Spinner";
 import DrawTags from "../drawTags/DrawTags";
 import ErrorModal from "../../shared/modal/ErrorModal";
@@ -14,21 +12,10 @@ import { adCreate, userInterfaceResetError } from "../../../store/actions";
 const AdNew = () => {
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector(getUserInterface);
-  //const navigate = useNavigate();
-  //const [isCreateAd, setIsCreateAd] = useState(false);
-  //const [showModal, setShowModal] = useState(false);
-  //const [error, setError] = useState(null);
-  //const [ad, setAd] = useState({});
 
   const resetError = () => {
     dispatch(userInterfaceResetError);
-    //setError(null);
   };
-
-  // const handleShowModal = () => {
-  //   setShowModal(false);
-  //   //navigate(`/adverts/${ad.id}`);
-  // };
 
   const [photo, setPhoto] = useState(null);
   const [formData, setFormData] = useState({
@@ -66,20 +53,6 @@ const AdNew = () => {
   const handleSubmit = event => {
     event.preventDefault();
     dispatch(adCreate(adNew));
-
-    //resetError();
-
-    //setIsCreateAd(true);
-
-    //const createdAd = await getForm(adNew);
-    // setAd(createdAd);
-
-    // setIsCreateAd(false);
-    //setShowModal(true);
-
-    //setError(error);
-    //NOTE Restablecer el estado a false en caso de error
-    // setIsCreateAd(false);
   };
 
   const buttonDisabled =

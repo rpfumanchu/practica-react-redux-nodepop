@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-//import { deleteAd } from "../service";
 import Layout from "../../layout/Layout";
 import "../adsPage/AdsPage.css";
 import "./AdDetail.css";
@@ -15,20 +14,16 @@ import {
   adLoad,
   toggleModalDelete,
   userInterfaceResetError,
-  //userInterfaceResetError,
 } from "../../../store/actions";
 
 const AdDetail = () => {
   const { id } = useParams();
-  //const navigate = useNavigate();
-  //const [error, setError] = useState(null);
+
   const dispatch = useDispatch();
   const ad = useSelector(getAdId(id));
   const { showModalDelete, error } = useSelector(getUserInterface);
-  //console.log(ad);
 
   const resetError = () => {
-    //setError(null);
     dispatch(userInterfaceResetError());
   };
 
@@ -48,24 +43,8 @@ const AdDetail = () => {
   };
 
   useEffect(() => {
-    dispatch(adLoad(id)).catch(error => {
-      // dispatch(userInterfaceResetError());
-    });
-    // if (error.status === 404) {
-    //   return navigate("/404");
-    // }
+    dispatch(adLoad(id)).catch(error => {});
   }, [dispatch, id]);
-
-  // useEffect(() => {
-  //   getAd(params.id)
-  //     .then(ad => ad(ad))
-  //     .catch(error => {
-  //       if (error.status === 404) {
-  //         return navigate("/404");
-  //       }
-  //       setError(error);
-  //     });
-  // }, [params.id, navigate]);
 
   return (
     <Layout title="Detalle del anuncio">

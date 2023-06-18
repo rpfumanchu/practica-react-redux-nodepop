@@ -174,8 +174,6 @@ export const adLoad =
       dispatch(adLoadedSuccess(ad));
     } catch (error) {
       dispatch(adLoadedFailure(error));
-
-      //throw error;
     }
   };
 
@@ -208,8 +206,6 @@ export const adCreate =
       return createdAds;
     } catch (error) {
       dispatch(adCreatedFailure(error));
-
-      //throw error;
     }
   };
 
@@ -232,17 +228,12 @@ export const adDeleteFailure = error => ({
 export const adDelete =
   id =>
   async (dispatch, getState, { service, router }) => {
-    // const isLoaded = getAdId(ad)(getState());
-    // if (isLoaded) {
-    //   return;
-    // }
     dispatch(adDeleteRequest());
     try {
       await service.ads.deleteAd(id);
-      //const deletedAd = await getAd(id);
+
       dispatch(adDeleteSuccess(id));
       router.navigate("/adverts");
-      //return deletedAd;
     } catch (error) {
       dispatch(adDeleteFailure(error));
       throw error;
